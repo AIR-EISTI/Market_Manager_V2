@@ -33,6 +33,17 @@ $ python manage.py makemigrations Snack
 $ python manage.py migrate
 ```
 
+### 5. Create a admin user
+
+``` py
+$ python manage.py shell
+>>> from django.contrib.auth.models import User
+>>> user=User.objects.create_user('username', password='password')
+>>> user.is_superuser=True
+>>> user.is_staff=True
+>>> user.save()
+```
+
 ## Tests
 The tests can be launch as follow (`coverage` required) :
 
@@ -52,6 +63,11 @@ Then launch ``` $ coverage report ``` to have a summary in percentage of the cov
 ``` $ coverage html ``` can be launch to have the html version of the coverage report, moreover
 this shows what part of the code is not covered by the tests.
 
+## Run server
+
+```
+$ python manage.py runserver
+```
 
 ## License
 This project follows the BSD license. See the [LICENSE](https://github.com/AIR-EISTI/Market_Manager_V2/blob/master/LICENSE)
