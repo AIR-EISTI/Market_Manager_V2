@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% load static %}
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="{% static 'Snack/css/bulma.css' %}" />
+         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        {% block stylesheet %}{% endblock %}
+        <title>{% block title %} {% endblock %}</title>
+    </head>
+    <body>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="columns">
+                    <div class="column">
+                    </div>
+                </div>
+                <div class="columns is-mobile">
+                    <div class="column is-half is-offset-one-quarter">
+                        <div class="notification
+                            {% if message.tags == 'success' %}
+                                is-success
+                            {% elif message.tags == 'error' %}
+                                is-danger
+                            {% endif %}
+                        ">
+                            <button class="delete"></button>
+                            {{message}}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% block content %}
+            <div class="container">
+            </div>
+        {% endblock %}
+        <script>
+            $(document).ready(function(){
+                $(".delete").click(function(){
+                    $(".notification").hide();
+                });
+            });
+            {% block javascript %}{% endblock %}
+        </script>
+    </body>
+</html>

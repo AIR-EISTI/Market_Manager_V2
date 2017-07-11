@@ -99,3 +99,7 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# django database
+db.sqlite3
+Snack/migrations/*
