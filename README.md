@@ -43,6 +43,11 @@ $ python manage.py shell
 >>> user.is_staff=True
 >>> user.save()
 ```
+or 
+
+```
+$ python manage.py createsuperuser
+```
 
 ## Tests
 The tests can be launch as follow (`coverage` required) :
