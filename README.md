@@ -35,7 +35,7 @@ $ python manage.py migrate
 
 ### 5. Create a admin user
 
-``` py
+```
 $ python manage.py shell
 >>> from django.contrib.auth.models import User
 >>> user=User.objects.create_user('username', password='password')
@@ -75,5 +75,5 @@ $ python manage.py runserver
 ```
 
 ## License
-This project follows the BSD license. See the [LICENSE](https://github.com/AIR-EISTI/Market_Manager_V2/blob/master/LICENSE)
+This project follows the BSD 2-Clause License. See the [LICENSE](https://github.com/AIR-EISTI/Market_Manager_V2/blob/master/LICENSE)
 for details.
