@@ -36,17 +36,16 @@ $ python manage.py migrate
 ### 5. Create a admin user
 
 ```
+$ python manage.py createsuperuser
+```
+or
+```
 $ python manage.py shell
 >>> from django.contrib.auth.models import User
 >>> user=User.objects.create_user('username', password='password')
 >>> user.is_superuser=True
 >>> user.is_staff=True
 >>> user.save()
-```
-or 
-
-```
-$ python manage.py createsuperuser
 ```
 
 ## Tests
@@ -75,5 +74,5 @@ $ python manage.py runserver
 ```
 
 ## License
-This project follows the BSD 2-Clause License. See the [LICENSE](https://github.com/AIR-EISTI/Market_Manager_V2/blob/master/LICENSE)
+This project follows the BSD 2-Clause License. See the [LICENSE](https://github.com/AIR-EISTI/Market_Manager_V2/blob/development/LICENSE)
 for details.
