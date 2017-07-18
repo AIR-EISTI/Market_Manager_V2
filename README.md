@@ -68,6 +68,15 @@ Then launch ``` $ coverage report ``` to have a summary in percentage of the cov
 ``` $ coverage html ``` can be launch to have the html version of the coverage report, moreover
 this shows what part of the code is not covered by the tests.
 
+If you want to ignored some file or folder, virtualenv folder for exemple,
+create a ```.coveragerc```, and add : 
+
+```
+[run]
+omit = path/to/venv, manage.py, Snack/migrations/*
+```
+
+
 ## Run server
 
 ```
