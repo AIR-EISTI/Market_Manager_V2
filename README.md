@@ -51,6 +51,8 @@ $ python manage.py shell
 ```
 
 ## Tests
+
+### Launch test
 The tests can be launch as follow (`coverage` required) :
 
 ```
@@ -64,11 +66,15 @@ python manage.py test Snack
 
 the verbosity level 2 or 3, `-v 2` or `-v 3`, can be added to have more detail.
 
+### Coverage Report
+
 Then launch ``` $ coverage report ``` to have a summary in percentage of the
 coverage.
 
 ``` $ coverage html ``` can be launch to have the html version of the coverage
 report, moreover this shows what part of the code is not covered by the tests.
+
+### Ignore files
 
 If you want to ignored some file or folder, virtualenv folder for exemple,
 create a ```.coveragerc```, and add :
@@ -77,6 +83,8 @@ create a ```.coveragerc```, and add :
 [run]
 omit = path/to/venv, manage.py, Snack/migrations/*
 ```
+
+### Django_coverage_plugin
 
 The plugin `django_coverage_plugin` allows the integration of the differents
 templates during the coverage. Add this, in the `.coveragerc` file :
