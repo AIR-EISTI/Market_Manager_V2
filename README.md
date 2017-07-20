@@ -1,13 +1,14 @@
 # Market_Manager_V2
 
-The second version of the sales manager of the association Air-Eisti. It's a [Django](https://www.djangoproject.com/) (1.11.2) application using the css framework 
-[bulma](http://bulma.io/) .
+The second version of the sales manager of the association Air-Eisti.
+It's a [Django](https://www.djangoproject.com/) (1.11.2) application using the css framework [bulma](http://bulma.io/) .
 
 ## Installation
 
 ### 1. virtualenv / virtualenvwrapper
 
-You should already know what is virtualenv. So, simply create it for this project :
+You should already know what is virtualenv. So, simply create it for this
+project :
 
 ```$ mkvirtualenv Market_Manager_V2```
 
@@ -22,7 +23,8 @@ $ cd Market_Manager_V2
 
 ### 3. Requirements
 
-The requirements.txt file contains all the libraries needed, to install them, simply launch :
+The requirements.txt file contains all the libraries needed, to install them,
+simply launch :
 
 ```$ pip install -r requirements.txt```
 
@@ -62,19 +64,45 @@ python manage.py test Snack
 
 the verbosity level 2 or 3, `-v 2` or `-v 3`, can be added to have more detail.
 
-Then launch ``` $ coverage report ``` to have a summary in percentage of the coverage.
+Then launch ``` $ coverage report ``` to have a summary in percentage of the
+coverage.
 
-``` $ coverage html ``` can be launch to have the html version of the coverage report, moreover
-this shows what part of the code is not covered by the tests.
+``` $ coverage html ``` can be launch to have the html version of the coverage
+report, moreover this shows what part of the code is not covered by the tests.
 
 If you want to ignored some file or folder, virtualenv folder for exemple,
-create a ```.coveragerc```, and add : 
+create a ```.coveragerc```, and add :
 
 ```
 [run]
 omit = path/to/venv, manage.py, Snack/migrations/*
 ```
 
+The plugin `django_coverage_plugin` allows the integration of the differents
+templates during the coverage. Add this, in the `.coveragerc` file :
+
+```
+plugins =
+    django_coverage_plugin
+```
+
+In order to use the plugin add `'debug': True` in the `settings.py` files
+as follow :
+
+```
+TEMPLATES = [
+    {
+        ...
+        'OPTIONS': {
+            'context_processors': [
+                ...
+            ],
+            'debug': True,
+        }
+        ...
+    }
+]
+```
 
 ## Run server
 
@@ -82,6 +110,11 @@ omit = path/to/venv, manage.py, Snack/migrations/*
 $ python manage.py runserver
 ```
 
+## Production
+
+Don't forget to pass all of the `debug` variable at `False`.
+
 ## License
-This project follows the BSD 2-Clause License. See the [LICENSE](https://github.com/AIR-EISTI/Market_Manager_V2/blob/development/LICENSE)
+This project follows the BSD 2-Clause License. See the
+[LICENSE](https://github.com/AIR-EISTI/Market_Manager_V2/blob/development/LICENSE)
 for details.
