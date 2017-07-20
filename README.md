@@ -118,11 +118,20 @@ TEMPLATES = [
 $ python manage.py runserver
 ```
 
-## Production
+## Deployment
 
 Don't forget to pass all of the `debug` variable at `False`.
+
+## Authors
+
+- __Laurine Sorel__ - _Initial work_ - [DracarysBZH](https://github.com/DracarysBZH)
+- __Tom__ - _Contributor_ - [Tjiho](https://github.com/Tjiho)
 
 ## License
 This project follows the BSD 2-Clause License. See the
 [LICENSE](https://github.com/AIR-EISTI/Market_Manager_V2/blob/development/LICENSE)
 for details.
+
+## Acknowledgments
+- Inspired by the first version of Market_Manager create by [FunkySayu](https://github.com/FunkySayu) and [blQn](https://github.com/blqn)
+- Readme inspired by [PurpleBooth/README-Template.md](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
