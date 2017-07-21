@@ -9,7 +9,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 class PurchaseAdmin(admin.ModelAdmin):
-    list_display = ('user', 'product', 'date', 'debt')
+    list_display = ('user', 'product', 'number', 'price', 'date', 'debt')
 
 
 class TypeAdmin(admin.ModelAdmin):

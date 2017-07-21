@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% block title %} Login {% endblock %}
+{% block title %} Sign Up {% endblock %}
 
 {% block content %}
     <div class="columns">
@@ -11,13 +11,13 @@
         <div class="column is-one-third">
         </div>
         <div class="column">
-            <form action="{% url 'connect' %}" method="post" accept-charset="utf-8">
+            <form action="{% url 'signup' %}" method="post" accept-charset="utf-8">
                 {% csrf_token %}
                 {% for field in form %}
                     <div class="field">
                         <p class="control">
                             <input class="input is-medium" placeholder="{{field.label}}" name="{{field.name}}" 
-                            {% if field.name == "password" %} type="password" {%endif%}
+                            {% if field.name == "password" or field.name == "password_verif" %} type="password" {%endif%}
                             >
                         </p>
                     </div>

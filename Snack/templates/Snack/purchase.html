@@ -1,18 +1,176 @@
 {% extends 'layout.html' %}
 
-{% block title %} Login {% endblock %}
+{% block stylesheet %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'Snack/css/purchase.css' %}" type="text/css" />
+{% endblock%}
+
+{% block title %} Purchase {% endblock %}
 
 {% block content %}
-    <div class="columns">
-        <div class="column">
-        </div>
-    </div>
+
     <div class="columns is-mobile">
-        <div class="column is-one-third">
+        <div class="column is-half is-offset-one-quarter" id="notif">
         </div>
-        <div class="column">
-            Purchase Page
-        </div>
-        <div class="column"></div>
     </div>
+    <div class="container is-fluid">
+        <div class="columns">
+            <div class="column"></div>
+        </div>
+
+        <nav class="level">
+            <div class="level-item has-text-centered">
+                <div>
+                    <p class="heading">Debt</p>
+                    <p class="title">{{request.user.profil.debt}} €</p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered">
+                <div>
+                    <p class="heading">Total</p>
+                    <p class="title" id="total">0,00 €</p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered">
+                <div>
+                    <p class="heading">User</p>
+                    <p class="title">{{request.user.username}}</p>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <div class="columns">
+            <div class="column"></div>
+            <div class="column">
+                <table class="table" id="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Number</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                            <tr>
+                                <th onclick="addProduct(
+                                        '{{product.name}}',
+                                        '{{product.quantity}}',
+                                        '{{product.price}}'
+                                    )"
+                                    style="cursor:pointer">
+                                    {{product.name}}
+                                </th>
+                                <td onclick="addProduct(
+                                        '{{product.name}}',
+                                        '{{product.quantity}}',
+                                        '{{product.price}}'
+                                    )"
+                                    style="cursor:pointer">
+                                    {{product.price}} €
+                                </td>
+                                <td  onclick="addProduct(
+                                        '{{product.name}}',
+                                        '{{product.quantity}}',
+                                        '{{product.price}}'
+                                    )"
+                                    id="{{product.name}}_nb"
+                                    style="cursor:pointer">
+                                    0
+                                </td>
+                                <td>
+                                    <div class="field is-grouped">
+                                        <p class="control">
+                                            <a class="button is-success is-small"
+                                                name="{{product.name}}"
+                                                onclick="addProduct(
+                                                    '{{product.name}}',
+                                                    '{{product.quantity}}',
+                                                    '{{product.price}}'
+                                                )">
+                                                +
+                                            </a>
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-danger is-small"
+                                                name="{{product.name}}"
+                                                onclick="removeProduct(
+                                                    '{{product.name}}',
+                                                    '{{product.price}}'
+                                                )">
+                                                -
+                                            </a>
+                                        </p>
+                                    </div>
+                                <td>
+                            </tr>
+                        {% endfor %}
+                </table>
+                <div class="column is-offset-6">
+                    <a class="button is-success" onClick="buy()">Ok</a>
+                    <a class="button is-link" onClick="reset()">Cancel</a>
+                </div>
+            </div>
+            <div class="column"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    function addProduct(productName, quantity, price){
+        var nb = parseInt($("#"+productName+"_nb").text());
+        if(nb<quantity){
+            $("#"+productName+"_nb").html(nb+1);
+            var total = parseFloat($("#total").text().replace(',','.'));
+            var priceDot = parseFloat(price.replace(',','.'));
+            $("#total").html((total+priceDot).toFixed(2).replace('.',',') + " €");
+        }
+    }
+
+    function removeProduct(productName, price){
+        var nb = parseInt($("#"+productName+"_nb").text());
+        if(nb>0){
+            $("#"+productName+"_nb").html(nb-1);
+            var total = parseFloat($("#total").text().replace(',','.'));
+            var priceDot = parseFloat(price.replace(',','.'));
+            $("#total").html((total-priceDot).toFixed(2).replace('.',',') + " €");
+        }
+    }
+
+    function reset(){
+        {% for product in products %}
+            $("#{{product.name}}_nb").html('0');
+            $("#total").html('0,00 €');
+        {% endfor %}
+    }
+
+    function buy(){
+        var products = {};
+        var nb = 0;
+        {% for product in products %}
+            nb = parseInt($('#{{product.name}}_nb').text());
+            if(nb != 0){
+                products.{{product.name}} = nb;
+            }
+        {% endfor %}
+        $.ajax({
+            type: "POST",
+            url: "/purchase/",
+            dataType: "json",
+            traditional: true,
+            data: {"products": JSON.stringify(products)},
+            success: function(data) {
+                if(data.return){
+                    window.location.replace("/logout/");
+                } else {
+                    location.reload();
+                }
+            }
+        });
+    }
+
+
 {% endblock %}

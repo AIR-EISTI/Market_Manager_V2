@@ -3,8 +3,9 @@
     <head>
         {% load static %}
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <link rel="stylesheet" type="text/css" href="{% static 'Snack/css/bulma.css' %}" />
-         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.3/css/bulma.css"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         {% block stylesheet %}{% endblock %}
         <title>{% block title %} {% endblock %}</title>
     </head>
@@ -22,6 +23,8 @@
                                 is-success
                             {% elif message.tags == 'error' %}
                                 is-danger
+                            {% elif message.tags == 'warning' %}
+                                is-warning
                             {% endif %}
                         ">
                             <button class="delete"></button>
@@ -38,7 +41,7 @@
         <script>
             $(document).ready(function(){
                 $(".delete").click(function(){
-                    $(".notification").hide();
+                    $(".notification").remove();
                 });
             });
             {% block javascript %}{% endblock %}
