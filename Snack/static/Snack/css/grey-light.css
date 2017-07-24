@@ -1,0 +1,27 @@
+html, body{
+    margin: 0;
+    height: 100%;
+}
+
+.theme * {
+    background-color: hsl(0, 0%, 71%);
+    color: #ffffff;
+}
+
+p.navbar-link:hover, .button.is-link, .table th, .table tr th{
+    color: #ffffff;
+}
+
+.navbar-link::after{
+    border: 1px solid #00D1B1;
+    border-right: 0;
+    border-top: 0;
+}
+
+.navbar-dropdown{
+    border-color: #ffffff;
+}
+
+.navbar-divider{
+    background-color: #ffffff;
+}

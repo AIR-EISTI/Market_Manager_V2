@@ -1,3 +1,31 @@
 #table{
     margin-top: 10%;
 }
+
+.navbar-link{
+    height: 1em;
+    margin-top: 0.5em;
+    margin-right: 1em;
+}
+
+.color-dark{
+    border-radius: 2px;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    float: left;
+    height: 24px;
+    margin-right: 8px;
+    width: 24px;
+    cursor: pointer;
+}
+
+.color-light{
+    border-radius: 2px;
+    box-shadow: 0 2px 3px 0 rgba(255, 255, 255, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    display: inline-block;
+    float: left;
+    height: 24px;
+    margin-right: 8px;
+    width: 24px;
+    cursor: pointer;
+}

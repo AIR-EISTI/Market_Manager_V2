@@ -126,3 +126,15 @@ def sign_up(request):
     else:
         form = SignUpForm()
     return render(request, 'Snack/signup.html', {'form': form})
+
+
+@csrf_exempt
+@login_required
+def change_theme(request):
+    if request.method == 'POST':
+        post = request.POST['color']
+        color = json.loads(post)
+        request.user.profil.color = color
+        request.user.profil.save()
+        json_data = json.dumps({'return': True})
+        return HttpResponse(json_data)

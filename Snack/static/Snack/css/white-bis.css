@@ -1,0 +1,8 @@
+html, body{
+    margin: 0;
+    height: 100%;
+}
+
+.theme * {
+    background-color: hsl(0, 0%, 98%);
+}

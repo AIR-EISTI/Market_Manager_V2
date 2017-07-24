@@ -1,0 +1,15 @@
+html, body{
+    margin: 0;
+    height: 100%;
+}
+
+.theme * {
+    background-color: hsl(0, 0%, 86%);
+}
+
+.table th, .table td{
+    border: 1px solid #363636;
+    border-width: 0 0 1px;
+    padding: 0.5em 0.75em;
+    vertical-align: top;
+}

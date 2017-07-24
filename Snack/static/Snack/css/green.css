@@ -1,0 +1,26 @@
+html, body{
+    margin: 0;
+    height: 100%;
+}
+
+.theme * {
+    background-color:  hsl(141, 71%, 45%);
+}
+
+
+.navbar-link::after {
+    border: 1px solid #000000;
+    border-right: 0;
+    border-top: 0;
+    content: " ";
+    display: block;
+    height: 0.5em;
+    pointer-events: none;
+    position: absolute;
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    width: 0.5em;
+    margin-top: -0.375em;
+    right: 1.125em;
+    top: 50%;
+}
