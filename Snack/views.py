@@ -51,6 +51,7 @@ def connect(request):
 def purchase(request):
     if request.method == 'POST' and request.user.profil.available:
         post = request.POST['products']
+        debt = json.loads(request.POST['debt'])
         products = json.loads(post)
         if len(products) <= 0:
             messages.add_message(
@@ -70,7 +71,11 @@ def purchase(request):
                             user=request.user,
                             product=product_object,
                             number=nb,
-                            price=round(price)).save()
+                            price=round(price, 2),
+                            debt=debt).save()
+                        if debt:
+                            request.user.profil.debt += round(price, 2)
+                            request.user.profil.save()
                     elif nb < 0 or nb > product_object.quantity:
                         messages.add_message(
                             request,

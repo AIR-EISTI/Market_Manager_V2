@@ -25,3 +25,8 @@ p.navbar-link:hover, .button.is-link, .table th, .table tr th{
 .navbar-divider{
     background-color: #ffffff;
 }
+
+.checkbox:hover{
+    color: #ffffff;
+    font-weight:bold;
+}

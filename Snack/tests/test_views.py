@@ -123,7 +123,7 @@ class TestPurchase(TestCase):
     def test_method_post(self):
         response = self.client.post(
             '/purchase/',
-            {'products': '{"Twix":0, "Mars":1}'}
+            {'products': '{"Twix":0, "Mars":1}', 'debt': '"false"'}
         )
         self.assertEqual(response.status_code, 200)
 
@@ -136,14 +136,14 @@ class TestPurchase(TestCase):
         self.mars.save()
         response = self.client.post(
             '/purchase/',
-            {'products': '{"Twix":0, "Mars":1}'}
+            {'products': '{"Twix":0, "Mars":1}', 'debt': '"False"'}
         )
         self.assertEqual(response.status_code, 200)
 
     def test_no_product(self):
         response = self.client.post(
             '/purchase/',
-            {'products': '{}'}
+            {'products': '{}', 'debt': '"false"'}
         )
         self.assertEqual(response.status_code, 200)
 
@@ -154,7 +154,20 @@ class TestPurchase(TestCase):
         self.twix.save()
         response = self.client.post(
             '/purchase/',
-            {'products': '{"Twix":-1}'}
+            {'products': '{"Twix":-1}', 'debt': '"false"'}
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_debt(self):
+        self.type = Type(name="Barre")
+        self.type.save()
+        self.twix = Product(name="Twix", type=self.type, price=0.6, quantity=10)
+        self.twix.save()
+        self.mars = Product(name="Mars", type=self.type, price=0.6, quantity=10)
+        self.mars.save()
+        response = self.client.post(
+            '/purchase/',
+            {'products': '{"Twix":0, "Mars":1}', 'debt': '"True"'}
         )
         self.assertEqual(response.status_code, 200)
 

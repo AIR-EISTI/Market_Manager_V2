@@ -207,6 +207,12 @@
                             </tr>
                         {% endfor %}
                 </table>
+                <div class="column">
+                    <label class="checkbox" title="If check the product will go in debt">
+                        <input type="checkbox" id="debt">
+                        In debt
+                    </label>
+                </div>
                 <div class="column is-offset-5">
                     <a class="button is-success" onClick="buy()">Ok</a>
                     <a class="button is-link" onClick="reset()">Cancel</a>
@@ -214,6 +220,21 @@
                 </div>
             </div>
             <div class="column"></div>
+        </div>
+    </div>
+    <div class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Validation</p>
+                <button class="delete" id="modal-delete"></button>
+            </header>
+            <section class="modal-card-body">
+            </section>
+            <footer class="modal-card-foot">
+                <a class="button is-success" id="valid">OK</a>
+                <a class="button" id="cancel">Cancel</a>
+            </footer>
         </div>
     </div>
 {% endblock %}
@@ -235,19 +256,34 @@
                 products.{{product.name}} = nb;
             }
         {% endfor %}
-        $.ajax({
-            type: "POST",
-            url: "/purchase/",
-            dataType: "json",
-            traditional: true,
-            data: {"products": JSON.stringify(products)},
-            success: function(data) {
-                if(data.return){
-                    window.location.replace("/logout/");
-                } else {
-                    location.reload();
+        $(".modal").addClass("is-active");
+        $(".modal-card-body").html("The amount of your order is : "+$("#total").text());
+        if($("#debt").is(":checked")){
+            $(".modal-card-body").append("<br/>You put your order in debt");
+        }
+        $('#modal-delete').click(function(){
+            $('.modal').attr('class', 'modal');
+        });
+
+        $('#cancel').click(function(){
+            $('.modal').attr('class', 'modal');
+        });
+
+        $('#valid').click(function(){
+            $.ajax({
+                type: "POST",
+                url: "/purchase/",
+                dataType: "json",
+                traditional: true,
+                data: {"products": JSON.stringify(products), "debt":$('#debt').is(":checked")},
+                success: function(data) {
+                    if(data.return){
+                        window.location.replace("/logout/");
+                    } else {
+                        location.reload();
+                    }
                 }
-            }
+            });
         });
     }
 
