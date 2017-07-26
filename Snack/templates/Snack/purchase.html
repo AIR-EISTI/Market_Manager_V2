@@ -1,141 +1,5 @@
-{% extends 'layout.html' %}
-
-{% block stylesheet %}
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'Snack/css/purchase.css' %}" type="text/css" />
-    <link id="default-style" rel="stylesheet" href="{% static 'Snack/css/default.css'%}" />
-    <link id="black-ter-style" rel="stylesheet" href="{% static 'Snack/css/black-ter.css'%}" />
-    <link id="grey-darker-style" rel="stylesheet" href="{% static 'Snack/css/grey-darker.css'%}" />
-    <link id="grey-dark-style" rel="stylesheet" href="{% static 'Snack/css/grey-dark.css'%}" />
-    <link id="grey-style" rel="stylesheet" href="{% static 'Snack/css/grey.css'%}" />
-    <link id="grey-light-style" rel="stylesheet" href="{% static 'Snack/css/grey-light.css'%}" />
-    <link id="grey-lighter-style" rel="stylesheet" href="{% static 'Snack/css/grey-lighter.css'%}" />
-    <link id="white-ter-style" rel="stylesheet" href="{% static 'Snack/css/white-ter.css'%}" />
-    <link id="white-bis-style" rel="stylesheet" href="{% static 'Snack/css/white-bis.css'%}" />
-    <link id="orange-style" rel="stylesheet" href="{% static 'Snack/css/orange.css' %}" />
-    <link id="green-style" rel="stylesheet" href="{% static 'Snack/css/green.css' %}" />
-    <link id="turquoise-style" rel="stylesheet" href="{% static 'Snack/css/turquoise.css' %}" />
-    <link id="blue-style" rel="stylesheet" href="{% static 'Snack/css/blue.css' %}" />
-    <script src="{% static 'Snack/js/purchase.js'%}" type="text/javascript"></script>
-{% endblock%}
-
-{% block title %} Purchase {% endblock %}
-
-{% block content %}
-    <div class="columns is-mobile">
-        <div class="column is-half is-offset-one-quarter" id="notif">
-        </div>
-    </div>
-    <div class="container is-fluid">
-        <div class="columns">
-            <div class="column"></div>
-        </div>
-
-        <nav class="level">
-            <div class="level-item has-text-centered">
-                <div>
-                    <p class="heading">Debt</p>
-                    <p class="title">{{request.user.profil.debt}} €</p>
-                </div>
-            </div>
-            <div class="level-item has-text-centered">
-                <div>
-                    <p class="heading">Total</p>
-                    <p class="title" id="total">0,00 €</p>
-                </div>
-            </div>
-            <div class="level-item has-text-centered">
-                <nav class="navbar is-transparent">
-                    <div class="navbar-item has-dropdown is-hoverable is-transparent">
-                        <!-- <p class="heading">User</p> -->
-                        <p class="title navbar-link">{{request.user.username}}</p>
-                        <div class="navbar-dropdown is-hidden-touch is-boxed">
-                            <div class="navbar-item">
-                                Themes
-                            </div>
-                            <div class="navbar-item">
-                                <span
-                                    class="color-dark"
-                                    style="background: #232323;"
-                                    id="black-ter"
-                                ></span>
-                                <span
-                                    class="color-dark"
-                                    style="background: #353535;"
-                                    id="grey-darker"
-                                ></span>
-                                <span
-                                    class="color-dark"
-                                    style="background: #494949;"
-                                    id="grey-dark"
-                                ></span>
-                                <span
-                                    class="color-dark"
-                                    style="background: #7A7A7A;"
-                                    id="grey"
-                                ></span>
-                                <span
-                                    class="color-dark"
-                                    style="background: #B5B5B5;"
-                                    id="grey-light"
-                                ></span>
-                            </div>
-                            <div class="navbar-item">
-                                <span
-                                    class="color-dark"
-                                    style="background: #DBDBDB;"
-                                    id="grey-lighter"
-                                ></span>
-                                <span
-                                    class="color-dark"
-                                    style="background: #F4F4F4;"
-                                    id="white-ter"
-                                ></span>
-                                <span
-                                    class="color-dark"
-                                    style="background: #F9F9F9;"
-                                    id="white-bis"
-                                ></span>
-                                <span
-                                    class="color-dark"
-                                    style="background: #ffffff;"
-                                    id="default"
-                                ></span>
-                            </div>
-                            <div class="navbar-item">
-                                <span
-                                    class="color-dark"
-                                    style="background: #E53500;"
-                                    id="orange"
-                                ></span>
-                                <span
-                                    class="color-dark"
-                                    style="background: #21C45A;"
-                                    id="green"
-                                ></span>
-                                <span
-                                    class="color-dark"
-                                    style="background: #00D1B1;"
-                                    id="turquoise"
-                                ></span>
-                                <span
-                                    class="color-dark"
-                                    style="background: #3273DC;"
-                                    id="blue"
-                                ></span>
-                            </div>
-                            <hr class="navbar-divider">
-                            <div class="navbar-item">
-                                Dernière connexion :<br />
-                                {{request.user.last_login}}
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </nav>
-    </div>
-    <nav class="navbar"></nav>
+{% extends 'layout_purchase.html' %}
+{% block content_purchase %}
     <div class="container">
         <div class="columns">
             <div class="column"></div>
@@ -152,59 +16,61 @@
                     </thead>
                     <tbody>
                         {% for product in products %}
-                            <tr>
-                                <th onclick="addProduct(
-                                        '{{product.name}}',
-                                        '{{product.quantity}}',
-                                        '{{product.price}}'
-                                    )"
-                                    style="cursor:pointer"
-                                    >
-                                    {{product.name}}
-                                </th>
-                                <td onclick="addProduct(
-                                        '{{product.name}}',
-                                        '{{product.quantity}}',
-                                        '{{product.price}}'
-                                    )"
-                                    style="cursor:pointer">
-                                    {{product.price}} €
-                                </td>
-                                <td  onclick="addProduct(
-                                        '{{product.name}}',
-                                        '{{product.quantity}}',
-                                        '{{product.price}}'
-                                    )"
-                                    id="{{product.name}}_nb"
-                                    style="cursor:pointer">
-                                    0
-                                </td>
-                                <td>
-                                    <div class="field is-grouped">
-                                        <p class="control">
-                                            <a class="button is-success is-small"
-                                                name="{{product.name}}"
-                                                onclick="addProduct(
-                                                    '{{product.name}}',
-                                                    '{{product.quantity}}',
-                                                    '{{product.price}}'
-                                                )">
-                                                +
-                                            </a>
-                                        </p>
-                                        <p class="control">
-                                            <a class="button is-danger is-small"
-                                                name="{{product.name}}"
-                                                onclick="removeProduct(
-                                                    '{{product.name}}',
-                                                    '{{product.price}}'
-                                                )">
-                                                -
-                                            </a>
-                                        </p>
-                                    </div>
-                                <td>
-                            </tr>
+                            {% if product.quantity > 0 %}
+                                <tr>
+                                    <th onclick="addProduct(
+                                            '{{product.name}}',
+                                            '{{product.quantity}}',
+                                            '{{product.price}}'
+                                        )"
+                                        style="cursor:pointer"
+                                        >
+                                        {{product.name}}
+                                    </th>
+                                    <td onclick="addProduct(
+                                            '{{product.name}}',
+                                            '{{product.quantity}}',
+                                            '{{product.price}}'
+                                        )"
+                                        style="cursor:pointer">
+                                        {{product.price}} €
+                                    </td>
+                                    <td  onclick="addProduct(
+                                            '{{product.name}}',
+                                            '{{product.quantity}}',
+                                            '{{product.price}}'
+                                        )"
+                                        id="{{product.name}}_nb"
+                                        style="cursor:pointer">
+                                        0
+                                    </td>
+                                    <td>
+                                        <div class="field is-grouped">
+                                            <p class="control">
+                                                <a class="button is-success is-small"
+                                                    name="{{product.name}}"
+                                                    onclick="addProduct(
+                                                        '{{product.name}}',
+                                                        '{{product.quantity}}',
+                                                        '{{product.price}}'
+                                                    )">
+                                                    +
+                                                </a>
+                                            </p>
+                                            <p class="control">
+                                                <a class="button is-danger is-small"
+                                                    name="{{product.name}}"
+                                                    onclick="removeProduct(
+                                                        '{{product.name}}',
+                                                        '{{product.price}}'
+                                                    )">
+                                                    -
+                                                </a>
+                                            </p>
+                                        </div>
+                                    <td>
+                                </tr>
+                            {% endif %}
                         {% endfor %}
                 </table>
                 <div class="column">
@@ -239,7 +105,7 @@
     </div>
 {% endblock %}
 
-{% block javascript %}
+{% block javascript-purchase %}
     function reset(){
         {% for product in products %}
             $("#{{product.name}}_nb").html('0');
@@ -287,155 +153,4 @@
         });
     }
 
-    function disable_css(){
-        $("#default-style").prop('disabled', true);
-        $("#black-ter-style").prop('disabled', true);
-        $("#grey-darker-style").prop('disabled', true);
-        $("#grey-dark-style").prop('disabled', true);
-        $("#grey-style").prop('disabled', true);
-        $("#grey-light-style").prop('disabled', true);
-        $("#grey-lighter-style").prop('disabled', true);
-        $("#white-ter-style").prop('disabled', true);
-        $("#white-bis-style").prop('disabled', true);
-        $("#orange-style").prop('disabled', true);
-        $("#green-style").prop('disabled', true);
-        $("#turquoise-style").prop('disabled', true);
-        $("#blue-style").prop('disabled', true);
-    }
-
-    $("#default").click(function() {
-        disable_css();
-        $("#default-style").prop('disabled', false);
-        $(".color-light").attr('class', 'color-dark');
-        change_theme_view('default');
-    });
-
-    $("#black-ter").click(function(){
-        disable_css();
-        $("#black-ter-style").prop('disabled', false);
-        $(".color-dark").attr('class', 'color-light');
-        change_theme_view('blackter');
-    });
-
-    $("#grey-darker").click(function(){
-        disable_css();
-        $("#grey-darker-style").prop('disabled', false);
-        $(".color-dark").attr('class', 'color-light');
-        change_theme_view('greydarker');
-    });
-
-    $("#grey-dark").click(function(){
-        disable_css();
-        $("#grey-dark-style").prop('disabled', false);
-        $(".color-dark").attr('class', 'color-light');
-        change_theme_view('greydark');
-    });
-
-    $("#grey").click(function(){
-        disable_css();
-        $("#grey-style").prop('disabled', false);
-        $(".color-dark").attr('class', 'color-light');
-        change_theme_view('grey');
-    });
-
-    $("#grey-light").click(function(){
-        disable_css();
-        $("#grey-light-style").prop('disabled', false);
-        $(".color-dark").attr('class', 'color-light');
-        change_theme_view('greylight');
-    });
-
-    $("#grey-lighter").click(function(){
-        disable_css();
-        $("#grey-lighter-style").prop('disabled', false);
-        $(".color-light").attr('class', 'color-dark');
-        change_theme_view('greylighter');
-    });
-
-    $("#white-ter").click(function(){
-        disable_css();
-        $("#white-ter-style").prop('disabled', false);
-        $(".color-light").attr('class', 'color-dark');
-        change_theme_view('whiteter');
-    });
-
-    $("#white-bis").click(function(){
-        disable_css();
-        $("#white-bis-style").prop('disabled', false);
-        $(".color-light").attr('class', 'color-dark');
-        change_theme_view('whitebis');
-    });
-
-    $("#orange").click(function(){
-        disable_css();
-        $("#orange-style").prop('disabled', false);
-        $(".color-light").attr('class', 'color-dark');
-        change_theme_view('orange');
-    });
-
-    $("#green").click(function(){
-        disable_css();
-        $("#green-style").prop('disabled', false);
-        $(".color-light").attr('class', 'color-dark');
-        change_theme_view('green');
-    });
-
-    $("#turquoise").click(function(){
-        disable_css();
-        $("#turquoise-style").prop('disabled', false);
-        $(".color-light").attr('class', 'color-dark');
-        change_theme_view('turquoise');
-    });
-
-    $("#blue").click(function(){
-        disable_css();
-        $("#blue-style").prop('disabled', false);
-        $(".color-light").attr('class', 'color-dark');
-        change_theme_view('blue');
-    });
-
-    $(document).ready(function(){
-        disable_css();
-        {% if request.user.profil.color == 'default' %}
-            $("#default-style").prop('disabled', false);
-        {% elif request.user.profil.color == 'blackter' %}
-            $("#black-ter-style").prop('disabled', false);
-            $(".color-dark").attr('class', 'color-light');
-        {% elif request.user.profil.color == 'greydarker' %}
-            $("#grey-darker-style").prop('disabled', false);
-            $(".color-dark").attr('class', 'color-light');
-        {% elif request.user.profil.color == 'greydark' %}
-            $("#grey-dark-style").prop('disabled', false);
-            $(".color-dark").attr('class', 'color-light');
-        {% elif request.user.profil.color == 'grey' %}
-            $("#grey-style").prop('disabled', false);
-            $(".color-dark").attr('class', 'color-light');
-        {% elif request.user.profil.color == 'greylight' %}
-            $("#grey-light-style").prop('disabled', false);
-            $(".color-dark").attr('class', 'color-light');
-        {% elif request.user.profil.color == 'greylighter' %}
-            $("#grey-lighter-style").prop('disabled', false);
-            $(".color-light").attr('class', 'color-dark');
-        {% elif request.user.profil.color == 'whiteter' %}
-            $("#white-ter-style").prop('disabled', false);
-            $(".color-light").attr('class', 'color-dark');
-        {% elif request.user.profil.color == 'whitebis' %}
-            $("#white-bis-style").prop('disabled', false);
-            $(".color-light").attr('class', 'color-dark');
-        {% elif request.user.profil.color == 'orange' %}
-            $("#orange-style").prop('disabled', false);
-            $(".color-light").attr('class', 'color-dark');
-        {% elif request.user.profil.color == 'green' %}
-            $("#green-style").prop('disabled', false);
-            $(".color-light").attr('class', 'color-dark');
-        {% elif request.user.profil.color == 'turquoise' %}
-            $("#turquoise-style").prop('disabled', false);
-            $(".color-light").attr('class', 'color-dark');
-        {% elif request.user.profil.color == 'blue' %}
-            $("#blue-style").prop('disabled', false);
-            $(".color-light").attr('class', 'color-dark');
-        {% endif %}
-    });
-
-
-{% endblock %}
+{% endblock %} 

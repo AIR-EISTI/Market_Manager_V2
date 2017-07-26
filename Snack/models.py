@@ -108,7 +108,7 @@ class Purchase(models.Model):
     price = models.FloatField(
         default=0
     )
-    date = models.DateField(
+    date = models.DateTimeField(
         auto_now=True
     )
     debt = models.BooleanField(
