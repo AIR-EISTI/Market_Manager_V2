@@ -60,6 +60,7 @@ class Profil(models.Model):
             ("basic_account", "Extern User"),
             ("member_account", "Air-Eisti members"),
             ("admin_account", "Administrator"),
+            ("treasurer_account", "Treasurer"),
         )
 
 

@@ -1,0 +1,231 @@
+{% extends 'layout_purchase.html' %}
+
+{% block stylesheet_bis %}
+{% load static%}
+<link rel="stylesheet" href="{% static 'Snack/css/jquery.ui.datepicker.css'%}" type="text/css" />
+{% endblock%}
+
+{% block content_purchase %}
+<div class="container  is-fluid">
+    <div class="columns">
+        <div class="column">
+        </div>
+    </div>
+    <form action="{% url 'sale' %}" method="get" id="form_sale">
+        {% csrf_token %}
+        <div class="columns is-mobile">
+            <div class="column is-one-third">
+                <section class="hero">
+                    <div class="hero-body">
+                        <div class="container">
+                            <h1 class="title">
+                                Total
+                            </h1>
+                            <h2 class="subtitle">
+                                {{total}} €
+                            </h2>
+                        </div>
+                    </div>
+                </section>
+                <div class="columns">
+                    <div class="column">
+                        <h1 class="title">
+                            Between the
+                        </h1>
+                        <input type="text" class="input" id="datepicker_start"
+                            name="datepicker_start" value="{{start}}">
+                    </div>
+                    <div class="column">
+                        <h1 class="title">
+                            and the
+                        </h1>
+                        <input type="text" class="input" id="datepicker_end"
+                            name="datepicker_end" value="{{end}}">
+                    </div>
+                </div>
+                <button class="button is-primary" type="submit">Submit</button>
+            </div>
+            <div class="column">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Number</th>
+                            <th>Price</th>
+                            <th>Date</th>
+                            <th>Debt</th>
+                            <th>User</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Product</th>
+                            <th>Number</th>
+                            <th>Price</th>
+                            <th>Date</th>
+                            <th>Debt</th>
+                            <th>User</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for purchase in purchases %}
+                            <tr>
+                                <th>{{purchase.product}}</th>
+                                <td>{{purchase.number}}</td>
+                                <td>{{purchase.price}} €</td>
+                                <td>{{purchase.date}}</td>
+                                <td>
+                                {% if purchase.debt %}
+                                    <i class="fa fa-check" aria-hidden="true"></i>
+                                {% else %}
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                {% endif %}
+                                </td>
+                                <td>{{purchase.user.username}}</td>
+                            </tr>
+                            {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="column"></div>
+        </div>
+        <div class="columns">
+            <div class="column"></div>
+            <div class="column">
+                <nav class="pagination">
+                    {% if purchases.has_previous %}
+                        <a class="pagination-previous"
+                            href="?page={{ purchases.previous_page_number }}">
+                            Previous
+                        </a>
+                    {% else %}
+                        <a class="pagination-previous" disabled>Previous</a>
+                    {% endif %}
+                    {% if purchases.has_next %}
+                        <a class="pagination-next"
+                            href="?page={{ purchases.next_page_number }}">
+                            Next page
+                        </a>
+                    {% else %}
+                        <a class="pagination-next" disabled>Next page</a>
+                    {% endif %}
+                    <ul class="pagination-list">
+                        {% if purchases.paginator.num_pages > 5 %}
+                            {% if purchases.number >= 3 %}
+                                <li>
+                                    <a class="pagination-link"
+                                        href="?page=1">
+                                        1
+                                    </a>
+                                </li>
+                                {% if purchases.number > 3 %}
+                                    <li>
+                                        <span class="pagination-ellipsis">
+                                            &hellip;
+                                        </span>
+                                    </li>
+                                {% endif %}
+                                <li>
+                                    <a class="pagination-link"
+                                        href="?page={{purchases.number|add:"-1"}}">
+                                        {{purchases.number|add:"-1"}}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="pagination-link is-current"
+                                        href="?page={{purchases.number}}">
+                                        {{purchases.number}}
+                                    </a>
+                                </li>
+                                {% if purchases.number < purchases.paginator.num_pages %}
+                                    <li>
+                                        <a class="pagination-link"
+                                            href="?page={{purchases.number|add:"+1"}}">
+                                            {{purchases.number|add:"+1"}}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <span class="pagination-ellipsis">
+                                            &hellip;
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <a class="pagination-link"
+                                            href="?page={{purchases.paginator.num_pages}}">
+                                            {{purchases.paginator.num_pages}}
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% else %}
+                                <li>
+                                    <a class="pagination-link
+                                        {% if purchases.number == 1 %}
+                                            is-current
+                                        {% endif %}"
+                                        href="?page=1">
+                                        1
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="pagination-link
+                                        {% if purchases.number == 2 %}
+                                            is-current
+                                        {% endif %}"
+                                        href="?page=2">
+                                        2
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="pagination-link
+                                        {% if purchases.number == 3 %}
+                                            is-current
+                                        {% endif %}"
+                                        href="?page=3">
+                                        3
+                                    </a>
+                                </li>
+                                <li>
+                                    <span class="pagination-ellipsis">
+                                        &hellip;
+                                    </span>
+                                </li>
+                                <li>
+                                    <a class="pagination-link"
+                                        href="?page={{purchases.paginator.num_pages}}">
+                                        {{purchases.paginator.num_pages}}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% else %}
+                            {% with ''|center:purchases.paginator.num_pages as range %}
+                                {% for _ in range %}
+                                    <li>
+                                        <a class="pagination-link
+                                            {% if purchases.number == forloop.counter %}
+                                                is-current
+                                            {% endif %}"
+                                            href="?page={{forloop.counter}}">
+                                            {{ forloop.counter }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            {% endwith %}
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+            <div class="column"></div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block javascript-purchase %}
+    $( function() {
+        $( "#datepicker_start" ).datepicker();
+        $( "#datepicker_end" ).datepicker();
+        $(" li a, .pagination-previous, .pagination-next ").click(function(){
+            this.href = this+"&datepicker_start="+$("#datepicker_start").val()+"&datepicker_end="+$("#datepicker_end").val();
+        });
+    } );
+{% endblock %}

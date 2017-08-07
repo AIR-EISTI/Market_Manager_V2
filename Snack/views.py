@@ -1,16 +1,20 @@
 import json
+import datetime
 
 from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
-from django.contrib.auth.decorators import login_required
+from django.db import IntegrityError
+from django.db.models import Sum
+from django.contrib.auth.decorators import login_required, permission_required
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.contenttypes.models import ContentType
 
-from Snack.forms import ConnectForm, SignUpForm
+from Snack.forms import ConnectForm, SignUpForm, SaleForm
 from Snack.models import Product, Purchase, Profil
 
 
@@ -20,8 +24,8 @@ def connect(request):
             form = ConnectForm(request.POST)
             if form.is_valid():
                 user = authenticate(
-                    username=form.data['username'],
-                    password=form.data['password']
+                    username=form.cleaned_data['username'],
+                    password=form.cleaned_data['password']
                 )
                 if user is not None:
                     login(request, user)
@@ -104,23 +108,36 @@ def sign_up(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            if form.data['password'] == form.data['password_verif']:
-                user = User.objects.create_user(
-                    username=form.data['username'],
-                    password=form.data['password'],
-                )
-                user.last_name = form.data['last_name']
-                user.first_name = form.data['first_name'],
-                user.save()
-                if form.data['card_number']:
-                    Profil(
-                        user=user,
-                        card_number=form.data['card_number']
-                    ).save()
-                else:
-                    Profil(user=user).save()
-                login(request, user)
-                return HttpResponseRedirect(reverse('purchase'))
+            if form.cleaned_data['password'] == form.cleaned_data['password_verif']:
+                try:
+                    user = User.objects.create_user(
+                        username=form.cleaned_data['username'],
+                        password=form.cleaned_data['password'],
+                    )
+                    user.last_name = form.cleaned_data['last_name']
+                    user.first_name = form.cleaned_data['first_name'],
+                    content_type = ContentType.objects.get_for_model(Profil)
+                    permission_address = Permission.objects.get(
+                        content_type=content_type,
+                        codename='basic_account'
+                    )
+                    user.save()
+                    user.user_permissions.add(permission_address)
+                    if form.cleaned_data['card_number']:
+                        Profil(
+                            user=user,
+                            card_number=form.cleaned_data['card_number']
+                        ).save()
+                    else:
+                        Profil(user=user).save()
+                    login(request, user)
+                    return HttpResponseRedirect(reverse('purchase'))
+                except IntegrityError:
+                    messages.add_message(
+                        request,
+                        messages.ERROR,
+                        "This username already exist... :'("
+                    )
             else:
                 messages.add_message(
                     request,
@@ -161,5 +178,60 @@ def history(request):
         purchases = paginator.page(1)
     except EmptyPage:
         purchases = paginator.page(paginator.num_pages)
-
     return render(request, 'Snack/history.html', {'purchases': purchases})
+
+
+@login_required
+@permission_required('Snack.treasurer_account')
+def sale(request):
+    start = ""
+    end = ""
+    form = SaleForm(request.GET)
+    if form.is_valid():
+        start = form.cleaned_data['datepicker_start']
+        end = form.cleaned_data['datepicker_end']
+        try:
+            date1 = datetime.datetime.strptime(start, "%m/%d/%Y").date()
+            date2 = datetime.datetime.strptime(end, "%m/%d/%Y").date()
+            if date1 < date2:
+                purchases_all = Purchase.objects.filter(
+                    date__date__range=[date1, date2]
+                )
+            else:
+                messages.add_message(
+                    request,
+                    messages.INFO,
+                    'The start date is greater than the end date'
+                )
+                purchases_all = Purchase.objects.all().order_by('-date')
+                date1 = ""
+                date2 = ""
+        except ValueError:
+            messages.add_message(
+                request,
+                messages.INFO,
+                'What have you done...'
+            )
+            purchases_all = Purchase.objects.all().order_by('-date')
+            date1 = ""
+            date2 = ""
+    else:
+        purchases_all = Purchase.objects.all().order_by('-date')
+    if purchases_all:
+        total = round(purchases_all.aggregate(Sum('price'))['price__sum'], 2)
+    else:
+        total = 0
+    paginator = Paginator(purchases_all, 10)
+    page = request.GET.get('page')
+    try:
+        purchases = paginator.page(page)
+    except PageNotAnInteger:
+        purchases = paginator.page(1)
+    except EmptyPage:
+        purchases = paginator.page(paginator.num_pages)
+    return render(
+        request,
+        'Snack/sale.html',
+        {'purchases': purchases, 'total': total, 'form': form, 'start': start,
+            'end': end}
+    )

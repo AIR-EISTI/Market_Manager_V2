@@ -17,6 +17,7 @@
     <link id="turquoise-style" rel="stylesheet" href="{% static 'Snack/css/turquoise.css' %}" />
     <link id="blue-style" rel="stylesheet" href="{% static 'Snack/css/blue.css' %}" />
     <script src="{% static 'Snack/js/purchase.js'%}" type="text/javascript"></script>
+    {% block stylesheet_bis %}{% endblock %}
 {% endblock%}
 
 {% block title %} Purchase {% endblock %}
@@ -32,12 +33,15 @@
         </div>
 
         <nav class="level">
-            <div class="level-item has-text-centered">
-                <div>
-                    <p class="heading">Debt</p>
-                    <p class="title">{{request.user.profil.debt}} €</p>
+
+            {% if 'Snack.member_account' in request.user.get_all_permissions%}
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">Debt</p>
+                        <p class="title">{{request.user.profil.debt}} €</p>
+                    </div>
                 </div>
-            </div>
+            {% endif %}
             <div class="level-item has-text-centered">
                 <div>
                     <p class="heading">Total</p>
@@ -131,6 +135,12 @@
                             <a class="navbar-item" href="{% url 'history' %}">
                                 History
                             </a>
+                            {% if 'Snack.treasurer_account' in request.user.get_all_permissions %}
+                                <hr class="navbar-divider">
+                                <a class="navbar-item" href="{% url 'sale' %}">
+                                    Sale
+                                </a>
+                            {% endif %}
                             <hr class="navbar-divider">
                             <div class="navbar-item">
                                 Dernière connexion :<br />
