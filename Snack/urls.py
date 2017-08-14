@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^change_theme/$', views.change_theme, name='change_theme'),
     url(r'^history/$', views.history, name='history'),
     url(r'^sale/$', views.sale, name='sale'),
+    url(r'^permissions/$', views.permissions, name='permissions'),
 ]

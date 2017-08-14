@@ -38,21 +38,20 @@
                 <div class="level-item has-text-centered">
                     <div>
                         <p class="heading">Debt</p>
-                        <p class="title">{{request.user.profil.debt}} €</p>
+                        <p class="subtitle is-3">{{request.user.profil.debt}} €</p>
                     </div>
                 </div>
             {% endif %}
             <div class="level-item has-text-centered">
                 <div>
                     <p class="heading">Total</p>
-                    <p class="title" id="total">0,00 €</p>
+                    <p class="subtitle is-3" id="total">0,00 €</p>
                 </div>
             </div>
             <div class="level-item has-text-centered">
                 <nav class="navbar is-transparent">
                     <div class="navbar-item has-dropdown is-hoverable is-transparent">
-                        <!-- <p class="heading">User</p> -->
-                        <p class="title navbar-link">{{request.user.username}}</p>
+                        <p class="subtitle is-3 navbar-link">{{request.user.username}}</p>
                         <div class="navbar-dropdown is-hidden-touch is-boxed">
                             <div class="navbar-item">
                                 Themes
@@ -141,6 +140,13 @@
                                     Sale
                                 </a>
                             {% endif %}
+                            {% if 'Snack.admin_account' in request.user.get_all_permissions %}
+                                <hr class="navbar-divider">
+                                <a class="navbar-item" href="{% url 'permissions' %}">
+                                    Permissions
+                                </a>
+                            {% endif %}
+
                             <hr class="navbar-divider">
                             <div class="navbar-item">
                                 Dernière connexion :<br />

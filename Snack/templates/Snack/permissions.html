@@ -1,0 +1,143 @@
+{% extends 'layout_account.html' %}
+
+{% block stylesheet_bis %}
+{% load static%}
+<link rel="stylesheet" href="{% static 'Snack/css/accounts.css'%}" type="text/css" />
+{% endblock%}
+
+{% block content_purchase %}
+<div class="container  is-fluid">
+    <div class="columns">
+        <div class="column"></div>
+        <div class="column">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="has-text-centered">Username</th>
+                        <th class="has-text-centered">Basic Account</th>
+                        <th class="has-text-centered">Member Account</th>
+                        <th class="has-text-centered">Admin Account</th>
+                        <th class="has-text-centered">Treasurer Account</th>
+                        <th class="has-text-centered">Debt</th>
+                        <th class="has-text-centered">Update</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th class="has-text-centered">Username</th>
+                        <th class="has-text-centered">Basic Account</th>
+                        <th class="has-text-centered">Member Account</th>
+                        <th class="has-text-centered">Admin Account</th>
+                        <th class="has-text-centered">Treasurer Account</th>
+                        <th class="has-text-centered">Debt</th>
+                        <th class="has-text-centered">Update</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    {% for profil in profils %}
+                        <tr>
+                            <td>{{profil.user.username}}
+                                <p class="is-size-8">
+                                    ({{profil.user.first_name}} {{profil.user.last_name}})
+                                </p>
+                            </td>
+                            <td>
+                                <div class="checkboxFour">
+                                    <input type="checkbox" value="1"
+                                        id="{{profil.user.username}}_basic"
+                                        {% if 'Snack.basic_account' in profil.user.get_all_permissions %}
+                                            checked
+                                        {% endif %}
+                                        />
+                                    <label for="{{profil.user.username}}_basic"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="checkboxFour">
+                                    <input type="checkbox" value="1"
+                                        id="{{profil.user.username}}_member"
+                                        {% if 'Snack.member_account' in profil.user.get_all_permissions %}
+                                            checked
+                                        {% endif %}
+                                    />
+                                    <label for="{{profil.user.username}}_member"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="checkboxFour">
+                                    <input type="checkbox" value="1"
+                                        id="{{profil.user.username}}_admin"
+                                        {% if 'Snack.admin_account' in profil.user.get_all_permissions %}
+                                            checked
+                                        {% endif %}
+                                    />
+                                    <label for="{{profil.user.username}}_admin"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="checkboxFour">
+                                    <input type="checkbox" value="0"
+                                        id="{{profil.user.username}}_treasurer"
+                                        {% if 'Snack.treasurer_account' in profil.user.get_all_permissions %}
+                                            checked
+                                        {% endif %}
+                                    />
+                                    <label for="{{profil.user.username}}_treasurer"></label>
+                                </div>
+                            </td>
+                            <td class="has-text-centered">
+                                <p class="is-size-5">
+                                    {{profil.debt}}&nbsp;€
+                                </p>
+                            </td>
+                            <td>
+                                <a class="button is-medium" id="{{profil.user.username}}">
+                                    <span class="icon is-medium">
+                                        <i class="fa fa-pencil"></i>
+                                    </span>
+                                </a> 
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="column"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript-purchase %}
+    $(function(){
+        $(' input ').click(function(){
+            var user = this.id.split('_');
+            $.ajax({
+                type: "POST",
+                url: "/permissions/",
+                dataType: "json",
+                traditional: true,
+                data: {'username': JSON.stringify(user[0]),
+                        'type': JSON.stringify(user[1]),
+                        'state': $(this).is(":checked")
+                    },
+                success: function(data) {
+                }
+            });
+        });
+
+        $(' .button ').click(function(){
+            $.ajax({
+                type: "POST",
+                url: "/permissions/",
+                dataType: "json",
+                traditional: true,
+                data: {'username': JSON.stringify(user[0]),
+                        'type': JSON.stringify(user[1]),
+                        'state': $(this).is(":checked")
+                    },
+                success: function(data) {
+                }
+            });
+        });
+    });
+{% endblock %}

@@ -235,3 +235,37 @@ def sale(request):
         {'purchases': purchases, 'total': total, 'form': form, 'start': start,
             'end': end}
     )
+
+
+@csrf_exempt
+@login_required
+@permission_required('Snack.admin_account')
+def permissions(request):
+    if request.method == 'POST':
+        username = json.loads(request.POST['username'])
+        account_type = json.loads(request.POST['type'])
+        state = json.loads(request.POST['state'])
+        user = User.objects.get(username=username)
+        content_type = ContentType.objects.get_for_model(Profil)
+        permission_address = Permission.objects.get(
+            content_type=content_type,
+            codename=account_type + '_account'
+        )
+        if state:
+            user.user_permissions.add(permission_address)
+        else:
+            user.user_permissions.remove(permission_address)
+        user.save()
+        json_data = json.dumps({'return': True})
+        return HttpResponse(json_data)
+    else:
+        profils = Profil.objects.all().order_by('user__username')
+        return render(request, 'Snack/permissions.html', {'profils': profils})
+#
+#
+#  @csrf_exempt
+#  @login_required
+#  @permission_required('Snack.admin_account')
+#  def account(request):
+#      if request.method == 'POST':
+#

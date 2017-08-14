@@ -1,4 +1,4 @@
-{% extends 'layout_purchase.html' %}
+{% extends 'layout_account.html' %}
 {% block content_purchase %}
     <div class="container">
         <div class="columns">
@@ -74,12 +74,12 @@
                         {% endfor %}
                 </table>
                 {% if 'Snack.member_account' in request.user.get_all_permissions%}
-                <div class="column">
-                    <label class="checkbox" title="If check the product will go in debt">
-                        <input type="checkbox" id="debt">
-                        In debt
-                    </label>
-                </div>
+                    <div class="column">
+                        <label class="checkbox" title="If check the product will go in debt">
+                            <input type="checkbox" id="debt">
+                            In debt
+                        </label>
+                    </div>
                 {% endif %}
                 <div class="column is-offset-5">
                     <a class="button is-success" onClick="buy()">Ok</a>
