@@ -11,4 +11,6 @@ urlpatterns = [
     url(r'^history/$', views.history, name='history'),
     url(r'^sale/$', views.sale, name='sale'),
     url(r'^permissions/$', views.permissions, name='permissions'),
+    url(r'^account/$', views.account, name='account'),
+    url(r'^update_account/$', views.update_account, name='update_account'),
 ]

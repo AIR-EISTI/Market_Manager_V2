@@ -17,14 +17,12 @@
             <div class="column is-one-third">
                 <section class="hero">
                     <div class="hero-body">
-                        <div class="container">
-                            <h1 class="title">
-                                Total
-                            </h1>
-                            <h2 class="subtitle">
-                                {{total}} €
-                            </h2>
-                        </div>
+                        <h1 class="title">
+                            Total
+                        </h1>
+                        <h2 class="subtitle">
+                            {{total}} €
+                        </h2>
                     </div>
                 </section>
                 <div class="columns">
@@ -225,7 +223,9 @@
         $( "#datepicker_start" ).datepicker();
         $( "#datepicker_end" ).datepicker();
         $(" li a, .pagination-previous, .pagination-next ").click(function(){
-            this.href = this+"&datepicker_start="+$("#datepicker_start").val()+"&datepicker_end="+$("#datepicker_end").val();
+            if ($(this).attr('disabled') != 'disabled'){
+                this.href = this+"&datepicker_start="+$("#datepicker_start").val()+"&datepicker_end="+$("#datepicker_end").val();
+            }
         });
     } );
 {% endblock %}

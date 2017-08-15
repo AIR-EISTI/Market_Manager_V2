@@ -43,7 +43,7 @@
                             </td>
                             <td>
                                 <div class="checkboxFour">
-                                    <input type="checkbox" value="1"
+                                    <input type="checkbox" class="permission" value="1"
                                         id="{{profil.user.username}}_basic"
                                         {% if 'Snack.basic_account' in profil.user.get_all_permissions %}
                                             checked
@@ -54,7 +54,7 @@
                             </td>
                             <td>
                                 <div class="checkboxFour">
-                                    <input type="checkbox" value="1"
+                                    <input type="checkbox" class="permission" value="1"
                                         id="{{profil.user.username}}_member"
                                         {% if 'Snack.member_account' in profil.user.get_all_permissions %}
                                             checked
@@ -65,7 +65,7 @@
                             </td>
                             <td>
                                 <div class="checkboxFour">
-                                    <input type="checkbox" value="1"
+                                    <input type="checkbox" class="permission" value="1"
                                         id="{{profil.user.username}}_admin"
                                         {% if 'Snack.admin_account' in profil.user.get_all_permissions %}
                                             checked
@@ -76,7 +76,7 @@
                             </td>
                             <td>
                                 <div class="checkboxFour">
-                                    <input type="checkbox" value="0"
+                                    <input type="checkbox" class="permission" value="0"
                                         id="{{profil.user.username}}_treasurer"
                                         {% if 'Snack.treasurer_account' in profil.user.get_all_permissions %}
                                             checked
@@ -91,7 +91,7 @@
                                 </p>
                             </td>
                             <td>
-                                <a class="button is-medium" id="{{profil.user.username}}">
+                                <a class="button is-medium update" id="{{profil.user.username}}" data-target="modal">
                                     <span class="icon is-medium">
                                         <i class="fa fa-pencil"></i>
                                     </span>
@@ -101,6 +101,69 @@
                     {% endfor %}
                 </tbody>
             </table>
+            <div id="modal" class="modal">
+                <div class="modal-background"></div>
+                <div class="modal-content">
+                    <form action="{% url 'update_account' %}" method="post">
+                        {% csrf_token %}
+                        <div class="box">
+                            <article class="media">
+                                <div class="media-left">
+                                    <h2 class="is-size-4">Debt</h2>
+                                    <div class="field">
+                                        <div class="control">
+                                            <input
+                                                class="input" type="text"
+                                                id="id_debt"
+                                                name="debt"
+                                            >
+                                            <span class="is-size-4">€</span>
+                                        </div>
+                                    </div>
+                                    <p id="debt" class="has-text-centered"></p>
+                                    <nav class="level">
+                                        <div class="level-left">
+                                            <div class="field is-grouped">
+                                                <p class="control">
+                                                    <button
+                                                        class="button is-primary"
+                                                        type="submit">
+                                                        <i class="fa fa-save"></i>
+                                                    </button>
+                                                </p>
+                                                <p class="control">
+                                                    <button
+                                                        class="button is-link"
+                                                        type="reset">
+                                                        <i class="fa fa-window-close"></i>
+                                                    </button>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </nav>
+                                </div>
+                                <div class="media-content">
+                                    <div class="content">
+                                        {% for field in form %}
+                                            {% if field.name == "id_user" %}
+                                                {{field}}
+                                            {% elif field.name != 'debt' %}
+                                                <div class="field">
+                                                    <label class="label">{{field.label}}</label>
+                                                    <div class="control">
+                                                        {{field}}
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </form>
+                </div>
+                <button class="modal-close is-large"></button>
+            </div>
         </div>
         <div class="column"></div>
     </div>
@@ -109,7 +172,7 @@
 
 {% block javascript-purchase %}
     $(function(){
-        $(' input ').click(function(){
+        $(' .permission ').click(function(){
             var user = this.id.split('_');
             $.ajax({
                 type: "POST",
@@ -120,24 +183,32 @@
                         'type': JSON.stringify(user[1]),
                         'state': $(this).is(":checked")
                     },
+                success: function(data) {}
+            });
+        });
+
+        $(' .update ').click(function(){
+            $("#modal").addClass("is-active");
+            $.ajax({
+                type: "POST",
+                url: "/account/",
+                dataType: "json",
+                traditional: true,
+                data: {'username': JSON.stringify(this.id) },
                 success: function(data) {
+                    $('#id_id_user').val(data['id_user']);
+                    $('#id_debt').val(data['debt']);
+                    $('#id_username').val(data['username']);
+                    $('#id_first_name').val(data['first_name']);
+                    $('#id_last_name').val(data['last_name']);
+                    $('#id_card_number').val(data['card_number']);
+                    console.log(data);
                 }
             });
         });
 
-        $(' .button ').click(function(){
-            $.ajax({
-                type: "POST",
-                url: "/permissions/",
-                dataType: "json",
-                traditional: true,
-                data: {'username': JSON.stringify(user[0]),
-                        'type': JSON.stringify(user[1]),
-                        'state': $(this).is(":checked")
-                    },
-                success: function(data) {
-                }
-            });
+        $('.modal-background, .modal-close').click(function(){
+            $("#modal").removeClass("is-active");
         });
     });
 {% endblock %}

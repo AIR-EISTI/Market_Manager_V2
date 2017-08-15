@@ -14,7 +14,7 @@ from django.contrib.auth.models import User, Permission
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.contenttypes.models import ContentType
 
-from Snack.forms import ConnectForm, SignUpForm, SaleForm
+from Snack.forms import ConnectForm, SignUpForm, SaleForm, UpdateAccountForm
 from Snack.models import Product, Purchase, Profil
 
 
@@ -209,8 +209,8 @@ def sale(request):
         except ValueError:
             messages.add_message(
                 request,
-                messages.INFO,
-                'What have you done...'
+                messages.info,
+                'what have you done...'
             )
             purchases_all = Purchase.objects.all().order_by('-date')
             date1 = ""
@@ -260,12 +260,54 @@ def permissions(request):
         return HttpResponse(json_data)
     else:
         profils = Profil.objects.all().order_by('user__username')
-        return render(request, 'Snack/permissions.html', {'profils': profils})
-#
-#
-#  @csrf_exempt
-#  @login_required
-#  @permission_required('Snack.admin_account')
-#  def account(request):
-#      if request.method == 'POST':
-#
+        form = UpdateAccountForm()
+        return render(request, 'Snack/permissions.html', {'profils': profils, 'form': form})
+
+
+@csrf_exempt
+@login_required
+@permission_required('Snack.admin_account')
+def account(request):
+    if request.method == 'POST':
+        username = json.loads(request.POST['username'])
+        profil = Profil.objects.get(user__username=username)
+        json_data = json.dumps({
+            'username': profil.user.username,
+            'first_name': profil.user.first_name,
+            'last_name': profil.user.last_name,
+            'debt': profil.debt,
+            'card_nuimber': profil.card_number,
+            'id_user': profil.user.id
+        })
+        return HttpResponse(json_data)
+
+
+@login_required
+@permission_required('Snack.admin_account')
+def update_account(request):
+    if request.method == 'POST':
+        form = UpdateAccountForm(request.POST)
+        if form.is_valid():
+            id = form.cleaned_data['id_user']
+            username = form.cleaned_data['username']
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            debt = form.cleaned_data['debt']
+            card_number = form.cleaned_data['card_number']
+            profil = Profil.objects.get(user__id=id)
+            if profil.user.username != username:
+                profil.user.username = username
+            if profil.user.first_name != first_name:
+                profil.user.first_name = first_name
+            if profil.user.last_name != last_name:
+                profil.user.last_name = last_name
+            if profil.debt != debt:
+                profil.debt = debt
+            if profil.card_number != card_number:
+                profil.card_number = card_number
+            try:
+                profil.user.save()
+                profil.save()
+            except IntegrityError:
+                pass
+        return HttpResponseRedirect(reverse('permissions'))

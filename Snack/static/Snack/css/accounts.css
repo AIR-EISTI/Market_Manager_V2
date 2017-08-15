@@ -63,3 +63,7 @@ input[type=checkbox] {
 .button {
     margin-top: 1em;
 }
+
+#id_debt {
+    width: 40%;
+}
