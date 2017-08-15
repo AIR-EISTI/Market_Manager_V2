@@ -16,7 +16,7 @@
     <link id="green-style" rel="stylesheet" href="{% static 'Snack/css/green.css' %}" />
     <link id="turquoise-style" rel="stylesheet" href="{% static 'Snack/css/turquoise.css' %}" />
     <link id="blue-style" rel="stylesheet" href="{% static 'Snack/css/blue.css' %}" />
-    <script src="{% static 'Snack/js/purchase.js'%}" type="text/javascript"></script>
+    <script src="{% static 'Snack/js/account.js'%}" type="text/javascript"></script>
     {% block stylesheet_bis %}{% endblock %}
 {% endblock%}
 
@@ -138,6 +138,9 @@
                                 <hr class="navbar-divider">
                                 <a class="navbar-item" href="{% url 'sale' %}">
                                     Sale
+                                </a>
+                                <a class="navbar-item" href="{% url 'stock' %}">
+                                    Stock
                                 </a>
                             {% endif %}
                             {% if 'Snack.admin_account' in request.user.get_all_permissions %}

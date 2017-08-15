@@ -311,3 +311,20 @@ def update_account(request):
             except IntegrityError:
                 pass
         return HttpResponseRedirect(reverse('permissions'))
+
+
+@csrf_exempt
+@login_required
+@permission_required('Snack.treasurer_account')
+def stock(request):
+    if request.method == 'POST':
+        product_name = json.loads(request.POST['productName'])
+        quantity = json.loads(request.POST['quantity'])
+        product = Product.objects.get(name=product_name)
+        product.quantity = quantity
+        product.save()
+        json_data = json.dumps({'res': True})
+        return HttpResponse(json_data)
+    else:
+        products = Product.objects.all()
+        return render(request, 'Snack/stock.html', {'products': products})

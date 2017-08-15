@@ -1,4 +1,9 @@
 {% extends 'layout_account.html' %}
+{% block stylesheet_bis %}
+    {% load static %}
+    <script src="{% static 'Snack/js/purchase.js'%}" type="text/javascript"></script>
+{% endblock%}
+
 {% block content_purchase %}
     <div class="container">
         <div class="columns">
@@ -155,4 +160,4 @@
         });
     }
 
-{% endblock %} 
+{% endblock %}
