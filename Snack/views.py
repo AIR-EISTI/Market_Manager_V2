@@ -318,10 +318,15 @@ def update_account(request):
 @permission_required('Snack.treasurer_account')
 def stock(request):
     if request.method == 'POST':
+        type_json = json.loads(request.POST['type'])
         product_name = json.loads(request.POST['productName'])
-        quantity = json.loads(request.POST['quantity'])
         product = Product.objects.get(name=product_name)
-        product.quantity = quantity
+        if type_json == 'number':
+            quantity = json.loads(request.POST['quantity'])
+            product.quantity = quantity
+        elif type_json == 'price':
+            price = json.loads(request.POST['price'])
+            product.price = price
         product.save()
         json_data = json.dumps({'res': True})
         return HttpResponse(json_data)

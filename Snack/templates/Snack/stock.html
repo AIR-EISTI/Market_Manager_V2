@@ -1,4 +1,5 @@
 {% extends 'layout_account.html' %}
+
 {% block content_purchase %}
     <div class="container">
         <div class="columns">
@@ -24,11 +25,17 @@
                                     >
                                     {{product.name}}
                                 </th>
-                                <td onclick="addProduct(
-                                        '{{product.name}}',
-                                    )"
-                                    style="cursor:pointer">
-                                    {{product.price}} €
+                                <td>
+                                    <div class="field">
+                                        <div class="control">
+                                            <input class="input price"
+                                                id="{{product.name}}_price"
+                                                type="text"
+                                                value="{{product.price}}"
+                                                onchange="savePriceProduct('{{product.name}}')"
+                                            >
+                                        </div>
+                                    </div>
                                 </td>
                                 <td>
                                     <div class="field">
@@ -96,10 +103,28 @@
             dataType: "json",
             traditional: true,
             data: {
+                'type': JSON.stringify('number'),
                 'productName': JSON.stringify(productName),
                 'quantity': JSON.stringify(quantity)
             },
             success: function(data) {}
         });
     }
+
+    function savePriceProduct(productName){
+        var price = parseFloat($("#"+productName+"_price").val().replace(",", "."));
+        $.ajax({
+            type: "POST",
+            url: "/stock/",
+            dataType: "json",
+            traditional: true,
+            data: {
+                'type': JSON.stringify('price'),
+                'productName': JSON.stringify(productName),
+                'price': JSON.stringify(price)
+            },
+            success: function(data) {}
+        });
+    }
+
 {% endblock %}
