@@ -134,6 +134,9 @@
                             <a class="navbar-item" href="{% url 'history' %}">
                                 History
                             </a>
+                            <a class="navbar-item" href="{% url 'logout' %}">
+                                Logout
+                            </a>
                             {% if 'Snack.treasurer_account' in request.user.get_all_permissions %}
                                 <hr class="navbar-divider">
                                 <a class="navbar-item" href="{% url 'sale' %}">
@@ -141,6 +144,9 @@
                                 </a>
                                 <a class="navbar-item" href="{% url 'stock' %}">
                                     Stock
+                                </a>
+                                <a class="navbar-item" href="{% url 'debt' %}">
+                                    Debt
                                 </a>
                             {% endif %}
                             {% if 'Snack.admin_account' in request.user.get_all_permissions %}

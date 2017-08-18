@@ -1,0 +1,81 @@
+{% extends 'layout_account.html' %}
+
+{% block stylesheet_bis %}
+    {% load static%}
+    <script type="text/javascript" src="{% static 'Snack/js/sorttable.js' %}"></script>
+{% endblock%}
+
+{% block content_purchase %}
+<div class="container is-fluid">
+    <div class="columns is-mobile">
+        <div class="column"></div>
+        <div class="column"></div>
+        <div class="column">
+            <table class="table is-striped sortable" id="myTable">
+                <thead>
+                    <tr>
+                        <th class="has-text-centered">Username</th>
+                        <th class="has-text-centered">Debt</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th class="has-text-centered">Username</th>
+                        <th class="has-text-centered">Debt</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    {% for profil in profils %}
+                        <tr>
+                            <td>{{profil.user.username}}
+                                <p class="is-size-8">
+                                    ({{profil.user.first_name}} {{profil.user.last_name}})
+                                </p>
+                            </td>
+                            <td class="has-text-centered">
+                                <p class="is-size-5 debt" id="{{profil.id}}_{{profil.debt}}">
+                                    {{profil.debt}}&nbsp;€
+                                </p>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="column"></div>
+        <div class="column"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript-purchase %}
+    $('.debt').click(function(){
+        var debt = this.id.split('_')[1].replace(',','.');
+        var id = this.id.split('_')[0];
+        $(this).parent().html(
+            '<div class="field">'+
+                '<div class="control">'+
+                    '<input class="input" id="'+id+'"'+
+                    'type="text"'+
+                    'value="'+debt+'"'+
+                    'onchange="saveDebt(\''+id+'\')">'+
+                '</div>'+
+            '</div>'
+        );
+    });
+
+    function saveDebt(id){
+        var debt = $('#'+id).val();
+        $.ajax({
+            type: "POST",
+            url: "/debt/",
+            dataType: "json",
+            traditional: true,
+            data: {
+                'id': JSON.stringify(id),
+                'debt': JSON.stringify(debt)
+            },
+            success: function(data) {}
+        });
+    }
+{% endblock %}

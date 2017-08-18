@@ -333,3 +333,20 @@ def stock(request):
     else:
         products = Product.objects.all()
         return render(request, 'Snack/stock.html', {'products': products})
+
+
+@csrf_exempt
+@login_required
+@permission_required('Snack.treasurer_account')
+def debt(request):
+    if request.method == 'POST':
+        id_profil = json.loads(request.POST['id'])
+        debt = json.loads(request.POST['debt'])
+        profil = Profil.objects.get(id=id_profil)
+        profil.debt = debt
+        profil.save()
+        json_data = json.dumps({'res': True})
+        return HttpResponse(json_data)
+    else:
+        profils = Profil.objects.all()
+        return render(request, 'Snack/debt.html', {'profils': profils})
