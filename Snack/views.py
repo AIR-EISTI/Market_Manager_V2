@@ -63,6 +63,7 @@ def connect(request):
 
 @csrf_exempt
 @login_required
+@permission_required('Snack.basic_account')
 def purchase(request):
     if request.method == 'POST' and request.user.profil.available:
         post = request.POST['products']
@@ -114,6 +115,8 @@ def logout_view(request):
     return HttpResponseRedirect(reverse('connect'))
 
 
+@login_required
+@permission_required('Snack.admin_account')
 def sign_up(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -140,8 +143,7 @@ def sign_up(request):
                         ).save()
                     else:
                         Profil(user=user).save()
-                    login(request, user)
-                    return HttpResponseRedirect(reverse('purchase'))
+                    return HttpResponseRedirect(reverse('permissions'))
                 except IntegrityError:
                     messages.add_message(
                         request,

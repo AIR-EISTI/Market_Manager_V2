@@ -89,7 +89,7 @@
                 <div class="column is-offset-5">
                     <a class="button is-success" onClick="buy()">Ok</a>
                     <a class="button is-link" onClick="reset()">Cancel</a>
-                    <a class="button is-link" href="{% url 'logout' %}">Logout</a>
+                    <a class="button is-link logout" href="{% url 'logout' %}">Logout</a>
                 </div>
             </div>
             <div class="column"></div>
@@ -159,5 +159,13 @@
             });
         });
     }
+
+    $( document ).ready(function() {
+        for (var c in Cookies.get()) {
+            if (c.split('_')[1] == 'nb'){
+                $('#'+c).html(Cookies.get(c));
+            }
+        }
+    });
 
 {% endblock %}

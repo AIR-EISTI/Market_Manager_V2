@@ -2,7 +2,9 @@
 
 {% block stylesheet_bis %}
 {% load static%}
-<link rel="stylesheet" href="{% static 'Snack/css/accounts.css'%}" type="text/css" />
+    <link rel="stylesheet" href="{% static 'Snack/css/accounts.css'%}" type="text/css" />
+    <link rel="stylesheet" href="{% static 'Snack/css/checkbox.css'%}" type="text/css" />
+    <script type="text/javascript" src="{% static 'Snack/js/sorttable.js' %}"></script>
 {% endblock%}
 
 {% block content_purchase %}
@@ -10,10 +12,10 @@
     <div class="columns">
         <div class="column"></div>
         <div class="column">
-            <table class="table">
+            <table class="table sortable" id="myTable">
                 <thead>
                     <tr>
-                        <th class="has-text-centered">Username</th>
+                        <th class="has-text-centered" style="cursor:pointer">Username</th>
                         <th class="has-text-centered">Basic Account</th>
                         <th class="has-text-centered">Member Account</th>
                         <th class="has-text-centered">Admin Account</th>

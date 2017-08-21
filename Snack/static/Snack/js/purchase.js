@@ -5,6 +5,8 @@ function addProduct(productName, quantity, price){
         var total = parseFloat($("#total").text().replace(',','.'));
         var priceDot = parseFloat(price.replace(',','.'));
         $("#total").html((total+priceDot).toFixed(2).replace('.',',') + " €");
+        Cookies.set(productName+'_nb', nb+1);
+        Cookies.set('total', $("#total").text());
     }
 }
 
@@ -15,5 +17,12 @@ function removeProduct(productName, price){
         var total = parseFloat($("#total").text().replace(',','.'));
         var priceDot = parseFloat(price.replace(',','.'));
         $("#total").html((total-priceDot).toFixed(2).replace('.',',') + " €");
+
+        if (nb-1 == 0){
+            Cookies.remove(productName+'_nb');
+        } else {
+            Cookies.set(productName+'_nb', nb-1);
+        }
+        Cookies.set('total', $("#total").text());
     }
 }
