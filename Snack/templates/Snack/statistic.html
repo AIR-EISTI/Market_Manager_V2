@@ -1,0 +1,60 @@
+{% extends 'layout_account.html' %}
+
+{% block stylesheet_bis %}
+{% endblock%}
+
+{% block content_purchase %}
+<div class="container is-fluid">
+    <div class="tabs is-centered">
+        <ul>
+            <li class="is-active">
+                <a id="purchase_by_date">
+                    <span class="icon is-small"><i class="fa fa-line-chart"></i></span>
+                    <span>Purchase by date</span>
+                </a>
+            </li>
+            <li>
+                <a id="purchase_by_snack">
+                    <span class="icon is-small"><i class="fa fa-bar-chart"></i></span>
+                    <span>Purchase by product</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="is-centered">
+        <div class="select">
+            <select id="period">
+                <option value="7">Last 7 days</option>
+                <option value="14">Last two weeks</option>
+                <option value="31">Last month</option>
+                <option value="365">Last year</option>
+            </select>
+        </div>
+        <img src="purchase_by_date.png?days=7" id="img">
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript-purchase %}
+    function removeClassActive(){
+        $('#period').val('7');
+        $('#purchase_by_date').parent().removeClass('is-active');
+        $('#purchase_by_snack').parent().removeClass('is-active');
+    }
+
+    $('#period').change(function(){
+        $('#img').attr('src', $('#img').prop('src').split('=')[0]+'='+$('#period').val());
+    });
+
+    $('#purchase_by_date').click(function(){
+        removeClassActive();
+        $('#purchase_by_date').parent().addClass('is-active');
+        $('#img').attr('src', 'purchase_by_date.png?days=7');
+    });
+
+    $('#purchase_by_snack').click(function(){
+        removeClassActive();
+        $('#purchase_by_snack').parent().addClass('is-active');
+        $('#img').attr('src', 'purchase_by_snack.png?days=7')
+    });
+{% endblock %}

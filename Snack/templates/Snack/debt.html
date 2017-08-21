@@ -14,8 +14,8 @@
             <table class="table is-striped sortable" id="myTable">
                 <thead>
                     <tr>
-                        <th class="has-text-centered">Username</th>
-                        <th class="has-text-centered">Debt</th>
+                        <th class="has-text-centered" style="cursor:pointer">Username</th>
+                        <th class="has-text-centered" style="cursor:pointer">Debt</th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -26,18 +26,20 @@
                 </tfoot>
                 <tbody>
                     {% for profil in profils %}
-                        <tr>
-                            <td>{{profil.user.username}}
-                                <p class="is-size-8">
-                                    ({{profil.user.first_name}} {{profil.user.last_name}})
-                                </p>
-                            </td>
-                            <td class="has-text-centered">
-                                <p class="is-size-5 debt" id="{{profil.id}}_{{profil.debt}}">
-                                    {{profil.debt}}&nbsp;€
-                                </p>
-                            </td>
-                        </tr>
+                        {% if profil.debt != 0 %}
+                            <tr>
+                                <td>{{profil.user.username}}
+                                    <p class="is-size-8">
+                                        ({{profil.user.first_name}} {{profil.user.last_name}})
+                                    </p>
+                                </td>
+                                <td class="has-text-centered">
+                                    <p class="is-size-5 debt" id="{{profil.id}}_{{profil.debt}}">
+                                        {{profil.debt}}&nbsp;€
+                                    </p>
+                                </td>
+                            </tr>
+                        {% endif %}
                     {% endfor %}
                 </tbody>
             </table>

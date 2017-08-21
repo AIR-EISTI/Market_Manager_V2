@@ -15,4 +15,7 @@ urlpatterns = [
     url(r'^update_account/$', views.update_account, name='update_account'),
     url(r'^stock/$', views.stock, name='stock'),
     url(r'^debt/$', views.debt, name='debt'),
+    url(r'^statistic/$', views.statistic, name='statistic'),
+    url(r'^statistic/purchase_by_date.png$', views.purchase_by_date),
+    url(r'^statistic/purchase_by_snack.png$', views.purchase_by_snack),
 ]

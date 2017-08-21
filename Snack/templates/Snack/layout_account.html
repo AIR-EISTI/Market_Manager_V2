@@ -148,6 +148,9 @@
                                 <a class="navbar-item" href="{% url 'debt' %}">
                                     Debt
                                 </a>
+                                <a class="navbar-item" href="{% url 'statistic' %}">
+                                    Statistic
+                                </a>
                             {% endif %}
                             {% if 'Snack.admin_account' in request.user.get_all_permissions %}
                                 <hr class="navbar-divider">

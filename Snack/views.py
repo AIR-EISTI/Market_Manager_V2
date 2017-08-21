@@ -1,6 +1,8 @@
 import json
 import datetime
+import numpy as np
 
+from datetime import timedelta
 from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -14,8 +16,16 @@ from django.contrib.auth.models import User, Permission
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.contenttypes.models import ContentType
 
+from itertools import groupby
+
 from Snack.forms import ConnectForm, SignUpForm, SaleForm, UpdateAccountForm
 from Snack.models import Product, Purchase, Profil
+
+import matplotlib
+matplotlib.use('Agg')
+from pylab import figure
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg
 
 
 def connect(request):
@@ -115,7 +125,7 @@ def sign_up(request):
                         password=form.cleaned_data['password'],
                     )
                     user.last_name = form.cleaned_data['last_name']
-                    user.first_name = form.cleaned_data['first_name'],
+                    user.first_name = form.cleaned_data['first_name']
                     content_type = ContentType.objects.get_for_model(Profil)
                     permission_address = Permission.objects.get(
                         content_type=content_type,
@@ -350,3 +360,74 @@ def debt(request):
     else:
         profils = Profil.objects.all()
         return render(request, 'Snack/debt.html', {'profils': profils})
+
+
+def extract_date(entity):
+    'extracts the starting date from an entity'
+    return entity.date.date()
+
+
+@login_required
+@permission_required('Snack.treasurer_account')
+def statistic(request):
+    return render(request, 'Snack/statistic.html')
+
+
+def purchase_by_date(request):
+    entities = Purchase.objects.order_by('-date')
+    days = request.GET['days']
+    today = datetime.datetime.today()
+    start = datetime.datetime.today() - timedelta(days=int(days))
+    nb_purchase_by_date = []
+    purchase_by_date = []
+    purchase = Purchase.objects.filter(date__date__range=[start, today])
+    for date, group in groupby(entities, key=extract_date):
+        nb_purchase = purchase.filter(
+            date__range=[
+                datetime.datetime.combine(date, datetime.time.min),
+                datetime.datetime.combine(date, datetime.time.max)
+            ]
+        ).count()
+        nb_purchase_by_date.append(nb_purchase)
+        purchase_by_date.append(date)
+
+    f = figure(figsize=(20, 5))
+    plt.plot(purchase_by_date, nb_purchase_by_date)
+    plt.xlabel('Date')
+    plt.ylabel('Number of purchase')
+    str_start = start.strftime('%d-%m-%Y')
+    str_today = today.strftime('%d-%m-%Y')
+    plt.suptitle('From ' + str_start + ' To ' + str_today)
+    canvas = FigureCanvasAgg(f)
+    response = HttpResponse(content_type='image/png')
+    canvas.print_png(response)
+    return response
+
+
+def purchase_by_snack(request):
+    f = figure(figsize=(15, 5))
+    days = request.GET['days']
+    today = datetime.datetime.today()
+    start = datetime.datetime.today() - timedelta(days=int(days))
+    purchase = Purchase.objects.filter(date__date__range=[start, today])
+    obj = []
+    total = []
+    products = Product.objects.all()
+    for product in products:
+        obj.append(product.name)
+        purchase_product = purchase.filter(product=product)
+        if purchase_product:
+            total.append(purchase_product.aggregate(Sum('number'))['number__sum'])
+        else:
+            total.append(0)
+    y_pos = np.arange(len(obj))
+    plt.bar(y_pos, total, align='center', alpha=0.5)
+    plt.xticks(y_pos, obj)
+    plt.ylabel('Quantity')
+    str_start = start.strftime('%d-%m-%Y')
+    str_today = today.strftime('%d-%m-%Y')
+    plt.suptitle('From ' + str_start + ' To ' + str_today)
+    canvas = FigureCanvasAgg(f)
+    response = HttpResponse(content_type='image/png')
+    canvas.print_png(response)
+    return response
