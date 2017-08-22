@@ -372,38 +372,23 @@ def extract_date(entity):
 @login_required
 @permission_required('Snack.treasurer_account')
 def statistic(request):
-    return render(request, 'Snack/statistic.html')
-
-
-def purchase_by_date(request):
-    entities = Purchase.objects.order_by('-date')
-    days = request.GET['days']
-    today = datetime.datetime.today()
-    start = datetime.datetime.today() - timedelta(days=int(days))
-    nb_purchase_by_date = []
+    entities = Purchase.objects.order_by('date')
+    start = entities[0].date.strftime('%Y-%m-%d')
+    end = datetime.datetime.today().strftime('%Y-%m-%d')
     purchase_by_date = []
-    purchase = Purchase.objects.filter(date__date__range=[start, today])
-    for date, group in groupby(entities, key=extract_date):
-        nb_purchase = purchase.filter(
+    for date_purchase, group in groupby(entities, key=extract_date):
+        nb_purchase = Purchase.objects.filter(
             date__range=[
-                datetime.datetime.combine(date, datetime.time.min),
-                datetime.datetime.combine(date, datetime.time.max)
+                datetime.datetime.combine(date_purchase, datetime.time.min),
+                datetime.datetime.combine(date_purchase, datetime.time.max)
             ]
         ).count()
-        nb_purchase_by_date.append(nb_purchase)
-        purchase_by_date.append(date)
-
-    f = figure(figsize=(20, 5))
-    plt.plot(purchase_by_date, nb_purchase_by_date)
-    plt.xlabel('Date')
-    plt.ylabel('Number of purchase')
-    str_start = start.strftime('%d-%m-%Y')
-    str_today = today.strftime('%d-%m-%Y')
-    plt.suptitle('From ' + str_start + ' To ' + str_today)
-    canvas = FigureCanvasAgg(f)
-    response = HttpResponse(content_type='image/png')
-    canvas.print_png(response)
-    return response
+        purchase_by_date.append({'x': date_purchase.strftime('%Y-%m-%d'), 'y': nb_purchase})
+    return render(
+        request,
+        'Snack/statistic.html',
+        {'purchase_by_date': purchase_by_date, 'start_purchase': start, 'end': end}
+    )
 
 
 def purchase_by_snack(request):
