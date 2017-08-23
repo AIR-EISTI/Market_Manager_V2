@@ -21,6 +21,13 @@ class TestHistory(TestCase):
         self.type.save()
         self.twix = Product(name="Twix", type=self.type, price=0.6, quantity=10)
         self.twix.save()
+        self.purchase1 = Purchase(
+            user=self.user,
+            product=self.twix,
+            number=2,
+            price=1.2
+        )
+        self.purchase1.save()
 
     def test_statistic_purchase_by_date(self):
         response = self.client.post(
