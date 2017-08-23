@@ -1,3 +1,5 @@
+import json
+
 from django.test import TestCase
 from django.contrib.auth.models import User
 
@@ -18,3 +20,4 @@ class TestTheme(TestCase):
             {'color': '"def"'}
         )
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(True, json.loads(response.content)['return'])
