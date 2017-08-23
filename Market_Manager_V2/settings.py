@@ -48,6 +48,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'Snack.middleware.LocaleMiddleware'
+
 ]
 
 ROOT_URLCONF = 'Market_Manager_V2.urls'
