@@ -21,12 +21,6 @@ from itertools import groupby
 from Snack.forms import ConnectForm, SignUpForm, SaleForm, UpdateAccountForm
 from Snack.models import Product, Purchase, Profil
 
-import matplotlib
-matplotlib.use('Agg')
-from pylab import figure
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_agg import FigureCanvasAgg
-
 
 def connect(request):
     if not request.user.is_authenticated:
@@ -206,7 +200,8 @@ def sale(request):
             date1 = datetime.datetime.strptime(start, "%m/%d/%Y").date()
             date2 = datetime.datetime.strptime(end, "%m/%d/%Y").date()
             if date1 < date2:
-                purchases_all = Purchase.objects.filter(
+                purchase = Purchase.objects.all().order_by('-date')
+                purchases_all = purchase.filter(
                     date__date__range=[date1, date2]
                 )
             else:
@@ -218,7 +213,7 @@ def sale(request):
                 purchases_all = Purchase.objects.all().order_by('-date')
                 date1 = ""
                 date2 = ""
-        except ValueError:
+        except (ValueError, TypeError):
             messages.add_message(
                 request,
                 messages.info,
@@ -273,7 +268,11 @@ def permissions(request):
     else:
         profils = Profil.objects.all().order_by('user__username')
         form = UpdateAccountForm()
-        return render(request, 'Snack/permissions.html', {'profils': profils, 'form': form})
+        return render(
+            request,
+            'Snack/permissions.html',
+            {'profils': profils, 'form': form}
+        )
 
 
 @csrf_exempt
@@ -288,7 +287,7 @@ def account(request):
             'first_name': profil.user.first_name,
             'last_name': profil.user.last_name,
             'debt': profil.debt,
-            'card_nuimber': profil.card_number,
+            'card_number': profil.card_number,
             'id_user': profil.user.id
         })
         return HttpResponse(json_data)
@@ -365,7 +364,6 @@ def debt(request):
 
 
 def extract_date(entity):
-    'extracts the starting date from an entity'
     return entity.date.date()
 
 
@@ -383,15 +381,29 @@ def statistic(request):
                 datetime.datetime.combine(date_purchase, datetime.time.max)
             ]
         ).count()
-        purchase_by_date.append({'x': date_purchase.strftime('%Y-%m-%d'), 'y': nb_purchase})
+        purchase_by_date.append(
+            {
+                'x': date_purchase.strftime('%Y-%m-%d'),
+                'y': nb_purchase
+            }
+        )
     return render(
         request,
         'Snack/statistic.html',
-        {'purchase_by_date': purchase_by_date, 'start_purchase': start, 'end': end}
+        {
+            'purchase_by_date': purchase_by_date,
+            'start_purchase': start,
+            'end': end
+        }
     )
 
 
 def purchase_by_snack(request):
+    import matplotlib
+    matplotlib.use('Agg')
+    from pylab import figure
+    import matplotlib.pyplot as plt
+    from matplotlib.backends.backend_agg import FigureCanvasAgg
     f = figure(figsize=(15, 5))
     days = request.GET['days']
     today = datetime.datetime.today()
