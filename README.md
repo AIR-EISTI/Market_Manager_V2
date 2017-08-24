@@ -136,5 +136,4 @@ for details.
 - Inspired by the first version of Market_Manager create by [FunkySayu](https://github.com/FunkySayu) and [blQn](https://github.com/blqn)
 - Readme inspired by [PurpleBooth/README-Template.md](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
 - Sortable table : [sorttable](https://kryogenix.org/code/browser/sorttable/)
-- Js-Cookie : [js-cookie](https://github.com/js-cookie/js-cookie)
 - Graph : [visjs.org](http://visjs.org/index.html#)

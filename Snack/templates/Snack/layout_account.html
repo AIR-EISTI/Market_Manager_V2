@@ -16,7 +16,6 @@
     <link id="green-style" rel="stylesheet" href="{% static 'Snack/css/green.css' %}" />
     <link id="turquoise-style" rel="stylesheet" href="{% static 'Snack/css/turquoise.css' %}" />
     <link id="blue-style" rel="stylesheet" href="{% static 'Snack/css/blue.css' %}" />
-    <script src="{% static 'Snack/js/js.cookie.js' %}" type="text/javascript"></script>
     <script src="{% static 'Snack/js/account.js'%}" type="text/javascript"></script>
     {% block stylesheet_bis %}{% endblock %}
 {% endblock%}
@@ -332,16 +331,12 @@
     });
 
     $('.logout').click(function(){
-        for (var c in Cookies.get()) {
-            if ( (c.split('_')[1] == 'nb') || (c == 'total') ) {
-                Cookies.remove(c);
-            }
-        }
+        sessionStorage.clear();
     });
 
     $( document ).ready(function() {
-        if (Cookies.get('total') != null ){
-            $('#total').html(Cookies.get('total'));
+        if (sessionStorage.getItem('total') != null){
+            $('#total').html(sessionStorage.getItem('total'));
         }
     });
 {% endblock %}

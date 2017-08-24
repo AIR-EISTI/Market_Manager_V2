@@ -46,7 +46,8 @@
                                             '{{product.price}}'
                                         )"
                                         id="{{product.name}}_nb"
-                                        style="cursor:pointer">
+                                        style="cursor:pointer"
+                                        class="nb">
                                         0
                                     </td>
                                     <td>
@@ -161,9 +162,12 @@
     }
 
     $( document ).ready(function() {
-        for (var c in Cookies.get()) {
-            if (c.split('_')[1] == 'nb'){
-                $('#'+c).html(Cookies.get(c));
+        var nb = $('.nb');
+        var session = 0;
+        for( var i=0;i<nb.length;i++){
+            session = sessionStorage.getItem(nb[i].id);
+            if(session != null){
+                $('#'+nb[i].id).html(session);
             }
         }
     });
