@@ -35,3 +35,25 @@
         <div class="column"></div>
     </div>
 {% endblock %}
+{% block javascript %}
+    function badgeuse(){
+        $.ajax({
+            type: "POST",
+            url: "/badgeuse/",
+            dataType: "json",
+            traditional: true,
+            data: {},
+            success: function(data) {
+                if(data['res']){
+                    location.reload();
+                } else {
+                    badgeuse();
+                }
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        badgeuse();
+    });
+{% endblock %}

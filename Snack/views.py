@@ -439,12 +439,16 @@ def purchase_by_snack(request):
     return response
 
 
+@csrf_exempt
 def login_by_badge(request):
     ref = badgeuse()
     user = Profil.objects.filter(card_number=ref)
     if user:
         login(request, user.first().user)
-    return HttpResponseRedirect(reverse('purchase'))
+        json_data = json.dumps({'res': True})
+    else:
+        json_data = json.dumps({'res': False})
+    return HttpResponse(json_data)
 
 
 @csrf_exempt

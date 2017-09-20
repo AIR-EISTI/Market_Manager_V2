@@ -125,3 +125,4 @@ USE_TZ = False
 STATIC_URL = '/static/'
 LOGIN_URL = '/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/Snack/'),)
+CELERY_BROKER_URL = 'amqp://localhost'
