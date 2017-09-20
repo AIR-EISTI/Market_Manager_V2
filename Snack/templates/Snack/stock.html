@@ -74,13 +74,83 @@
                             </tr>
                         {% endfor %}
                 </table>
+                <a class="button is-success" id="createP">Create product</a>
             </div>
             <div class="column"></div>
+        </div>
+    </div>
+    <div class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Create Product</p>
+                <button class="delete" id="modal-delete"></button>
+            </header>
+            <section class="modal-card-body">
+                <div class="field">
+                    <label class="name">Name</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Name input" id="name">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="name">Price</label>
+                    <div class="control">
+                        <input class="input" type="number" placeholder="Price input" id="price">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="select">
+                        <select id="type">
+                            {% for t in type %}
+                                <option value="{{t.id}}_type">{{t.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="name">Number of products</label>
+                    <div class="control">
+                        <input class="input" type="number" placeholder="Number input" id="quantity">
+                    </div>
+                </div>
+            </section>
+            <footer class="modal-card-foot">
+                <a class="button is-success" id="valid">OK</a>
+                <a class="button" id="cancel">Cancel</a>
+            </footer>
         </div>
     </div>
 {% endblock %}
 
 {% block javascript-purchase %}
+    $('#createP').click(function(){
+        $(".modal").addClass("is-active");
+        $('#modal-delete').click(function(){
+            $('.modal').attr('class', 'modal');
+        });
+        $('#valid').click(function(){
+            $.ajax({
+                type: "POST",
+                url: "/create_product/",
+                dataType: "json",
+                traditional: true,
+                data: {
+                    'name': JSON.stringify($('#name').val()),
+                    'price': JSON.stringify($('#price').val()),
+                    'quantity': JSON.stringify($('#quantity').val()),
+                    'type': JSON.stringify($('#type').val())
+                },
+                success: function(data) {
+                    location.reload();
+                }
+            });
+        });
+        $('#cancel').click(function(){
+            $('.modal').attr('class', 'modal');
+        });
+    });
+
     function addProduct(productName){
         var nb = parseInt($("#"+productName+"_nb").val());
         $("#"+productName+"_nb").val(nb+1);
