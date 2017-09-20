@@ -19,7 +19,7 @@
                         {% for product in products %}
                             <tr>
                                 <th onclick="addProduct(
-                                        '{{product.name}}',
+                                        '{{product.id}}',
                                     )"
                                     style="cursor:pointer"
                                     >
@@ -32,7 +32,7 @@
                                                 id="{{product.name}}_price"
                                                 type="text"
                                                 value="{{product.price}}"
-                                                onchange="savePriceProduct('{{product.name}}')"
+                                                onchange="savePriceProduct(this,'{{product.name}}')"
                                             >
                                         </div>
                                     </div>
@@ -41,10 +41,10 @@
                                     <div class="field">
                                         <div class="control">
                                             <input class="input"
-                                                id="{{product.name}}_nb"
+                                                id="product_{{product.id}}_nb"
                                                 type="text"
                                                 value="{{product.quantity}}"
-                                                onchange="saveNumberProduct('{{product.name}}')"
+                                                onchange="saveNumberProduct('{{product.id}}','{{product.name}}')"
                                             >
                                         </div>
                                     </div>
@@ -55,16 +55,17 @@
                                             <a class="button is-success is-small"
                                                 name="{{product.name}}"
                                                 onclick="addProduct(
-                                                    '{{product.name}}',
+                                                    '{{product.id}}',
+                                                    '{{product.name}}'
                                                 )">
-                                                +
                                             </a>
                                         </p>
                                         <p class="control">
                                             <a class="button is-danger is-small"
                                                 name="{{product.name}}"
                                                 onclick="removeProduct(
-                                                    '{{product.name}}',
+                                                    '{{product.id}}',
+                                                    '{{product.name}}'
                                                 )">
                                                 -
                                             </a>
@@ -81,22 +82,22 @@
 {% endblock %}
 
 {% block javascript-purchase %}
-    function addProduct(productName){
-        var nb = parseInt($("#"+productName+"_nb").val());
-        $("#"+productName+"_nb").val(nb+1);
-        saveNumberProduct(productName);
+    function addProduct(productId,productName){
+        var nb = parseInt($("#product_"+productId+"_nb").val());
+        $("#product_"+productId+"_nb").val(nb+1);
+        saveNumberProduct(productId,productName);
     }
 
-    function removeProduct(productName){
-        var nb = parseInt($("#"+productName+"_nb").val());
+    function removeProduct(productId,productName){
+        var nb = parseInt($("#product_"+productId+"_nb").val());
         if(nb-1>0){
-            $("#"+productName+"_nb").val(nb-1);
-            saveNumberProduct(productName);
+            $("#product_"+productId+"_nb").val(nb-1);
+            saveNumberProduct(productId,productName);
         }
     }
 
-    function saveNumberProduct(productName){
-        var quantity = parseInt($("#"+productName+"_nb").val());
+    function saveNumberProduct(productId,productName){
+        var quantity = parseInt($("#product_"+productId+"_nb").val());
         $.ajax({
             type: "POST",
             url: "/stock/",
@@ -111,8 +112,9 @@
         });
     }
 
-    function savePriceProduct(productName){
-        var price = parseFloat($("#"+productName+"_price").val().replace(",", "."));
+    function savePriceProduct(input,productName){
+        console.log(input);
+        var price = parseFloat(input.value.replace(",", "."));
         $.ajax({
             type: "POST",
             url: "/stock/",
