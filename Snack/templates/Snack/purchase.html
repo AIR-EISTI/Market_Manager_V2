@@ -23,8 +23,9 @@
                         {% for product in products %}
                             {% if product.quantity > 0 %}
                                 <tr>
+                                    <!-- product name -->
                                     <th onclick="addProduct(
-                                            '{{product.name}}',
+                                            '{{product.id}}',
                                             '{{product.quantity}}',
                                             '{{product.price}}'
                                         )"
@@ -32,31 +33,34 @@
                                         >
                                         {{product.name}}
                                     </th>
+                                    <!-- product price -->
                                     <td onclick="addProduct(
-                                            '{{product.name}}',
+                                            '{{product.id}}',
                                             '{{product.quantity}}',
                                             '{{product.price}}'
                                         )"
                                         style="cursor:pointer">
                                         {{product.price}} €
                                     </td>
+                                    <!-- product number -->
                                     <td  onclick="addProduct(
-                                            '{{product.name}}',
+                                            '{{product.id}}',
                                             '{{product.quantity}}',
                                             '{{product.price}}'
                                         )"
-                                        id="{{product.name}}_nb"
+                                        id="product_{{product.id}}_nb"
                                         style="cursor:pointer"
                                         class="nb">
                                         0
                                     </td>
+                                    <!-- button +/- -->
                                     <td>
                                         <div class="field is-grouped">
                                             <p class="control">
                                                 <a class="button is-success is-small"
                                                     name="{{product.name}}"
                                                     onclick="addProduct(
-                                                        '{{product.name}}',
+                                                        '{{product.id}}',
                                                         '{{product.quantity}}',
                                                         '{{product.price}}'
                                                     )">
@@ -67,7 +71,7 @@
                                                 <a class="button is-danger is-small"
                                                     name="{{product.name}}"
                                                     onclick="removeProduct(
-                                                        '{{product.name}}',
+                                                        '{{product.id}}',
                                                         '{{product.price}}'
                                                     )">
                                                     -
@@ -116,7 +120,7 @@
 {% block javascript-purchase %}
     function reset(){
         {% for product in products %}
-            $("#{{product.name}}_nb").html('0');
+            $("#product_{{product.id}}_nb").html('0');
             $("#total").html('0,00 €');
         {% endfor %}
     }
@@ -124,17 +128,25 @@
     function buy(){
         var products = {};
         var nb = 0;
+        
+        //list of products
+
         {% for product in products %}
-            nb = parseInt($('#{{product.name}}_nb').text());
+            nb = parseInt($('#product_{{product.id}}_nb').text());
             if(nb != 0){
-                products.{{product.name}} = nb;
+                products["{{product.name}}"] = nb;
             }
         {% endfor %}
+
+
         $(".modal").addClass("is-active");
         $(".modal-card-body").html("The amount of your order is : "+$("#total").text());
         if($("#debt").is(":checked")){
             $(".modal-card-body").append("<br/>You put your order in debt");
         }
+
+        //action on button
+
         $('#modal-delete').click(function(){
             $('.modal').attr('class', 'modal');
         });
@@ -142,6 +154,8 @@
         $('#cancel').click(function(){
             $('.modal').attr('class', 'modal');
         });
+
+        //ajax request
 
         $('#valid').click(function(){
             $.ajax({
@@ -152,6 +166,7 @@
                 data: {"products": JSON.stringify(products), "debt":$('#debt').is(":checked")},
                 success: function(data) {
                     if(data.return){
+                        sessionStorage.clear();
                         window.location.replace("/logout/");
                     } else {
                         location.reload();

@@ -17,4 +17,6 @@ urlpatterns = [
     url(r'^debt/$', views.debt, name='debt'),
     url(r'^statistic/$', views.statistic, name='statistic'),
     url(r'^statistic/purchase_by_snack.png$', views.purchase_by_snack),
+    url(r'^badgeuse/$', views.login_by_badge),
+    url(r'^create_product/$', views.create_product)
 ]

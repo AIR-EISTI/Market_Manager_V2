@@ -19,7 +19,9 @@ from django.contrib.contenttypes.models import ContentType
 from itertools import groupby
 
 from Snack.forms import ConnectForm, SignUpForm, SaleForm, UpdateAccountForm
-from Snack.models import Product, Purchase, Profil
+from Snack.models import Product, Purchase, Profil, Type
+
+from .tasks import badgeuse
 
 
 def connect(request):
@@ -343,7 +345,12 @@ def stock(request):
         return HttpResponse(json_data)
     else:
         products = Product.objects.all()
-        return render(request, 'Snack/stock.html', {'products': products})
+        type = Type.objects.all()
+        return render(
+            request,
+            'Snack/stock.html',
+            {'products': products, 'type': type}
+        )
 
 
 @csrf_exempt
@@ -430,3 +437,31 @@ def purchase_by_snack(request):
     response = HttpResponse(content_type='image/png')
     canvas.print_png(response)
     return response
+
+
+def login_by_badge(request):
+    ref = badgeuse()
+    user = Profil.objects.filter(card_number=ref)
+    if user:
+        login(request, user.first().user)
+    return HttpResponseRedirect(reverse('purchase'))
+
+
+@csrf_exempt
+@login_required
+@permission_required('Snack.treasurer_account')
+def create_product(request):
+    if request.method == 'POST':
+        name = json.loads(request.POST['name'])
+        price = json.loads(request.POST['price'])
+        number = json.loads(request.POST['quantity'])
+        type = json.loads(request.POST['type'])
+        object_type = Type.objects.get(id=type.split('_')[0])
+        Product.objects.create(
+            name=name,
+            type=object_type,
+            price=float(price),
+            quantity=int(number)
+        ).save()
+        json_data = json.dumps({'res': True})
+        return HttpResponse(json_data)
