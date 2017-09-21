@@ -352,6 +352,12 @@ def stock(request):
             {'products': products, 'type': type}
         )
 
+@csrf_exempt
+@login_required
+def heartbeat(request):
+    json_data = json.dumps({'res': True})
+    return HttpResponse(json_data)
+
 
 @csrf_exempt
 @login_required

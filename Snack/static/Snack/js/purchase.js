@@ -1,6 +1,6 @@
 function addProduct(productName, quantity, price){
     var nb = parseInt($("#product_"+productName+"_nb").text());
-
+    ping();
     if(nb<quantity){
         //get old price
         $("#product_"+productName+"_nb").html(nb+1);
@@ -16,6 +16,7 @@ function addProduct(productName, quantity, price){
 
 function removeProduct(productName, price){
     var nb = parseInt($("#product_"+productName+"_nb").text());
+    ping();
     if(nb>0){
         //get old price
         $("#product_"+productName+"_nb").html(nb-1);
