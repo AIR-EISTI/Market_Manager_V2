@@ -101,6 +101,12 @@ def purchase(request):
             json_data = json.dumps({'return': True})
         return HttpResponse(json_data)
     else:
+        if "version" in request.GET:
+            if request.GET["version"] == "notouch":
+                types = Type.objects.all()
+                products = Product.objects.all()
+                return render(request, 'Snack/purchaseNoTouch.html', {'types':types,'products':products})
+            
         if "type" in request.GET:
             typeSelect = Type.objects.get(name=request.GET["type"])
             products = Product.objects.filter(type=typeSelect.id)

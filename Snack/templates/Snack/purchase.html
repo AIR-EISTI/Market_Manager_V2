@@ -17,6 +17,10 @@
                                                     )"
 
 !-->
+<div style="text-align: center">
+        <a href="/purchase?version=notouch" class="button button-big" style="margin:auto">No touch version</a>
+</div>
+
     <nav id="types">
         {% for type in types %}
         <a href="/purchase?type={{type.name}}">
@@ -29,9 +33,9 @@
 
     </nav>
     <div id="action">
-        <button class="button is-success" onclick="buy()">Buy</button>
-        <button class="button button is-light" onclick="reset()">Cancel</button>
-        <button class="button button is-light logout" href="{% url 'logout' %}"> Logout</button>
+        <button class="button is-success button-big" onclick="buy()">Buy</button>
+        <button class="button button is-light button-big" onclick="reset()">Cancel</button>
+        <button class="button button is-light logout button-big" href="{% url 'logout' %}"> Logout</button>
     </div>
     <section id="products">
             {% for product in products %}
@@ -69,8 +73,8 @@
             <section class="modal-card-body">
             </section>
             <footer class="modal-card-foot">
-                <a class="button is-success" id="valid">OK</a>
-                <a class="button" id="cancel">Cancel</a>
+                <a class="button is-success button-big" id="valid">OK</a>
+                <a class="button is-light button-big" id="cancel">Cancel</a>
             </footer>
         </div>
     </div>

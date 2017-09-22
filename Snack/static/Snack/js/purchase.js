@@ -56,15 +56,11 @@ function saveAmountProduct(productName,nb)
     if(sessionStorage.amountProduct != null)
     {
         amountProduct = JSON.parse(sessionStorage.amountProduct);
-        console.log(amountProduct)
     }
     else
     {
-        console.log("titi")
         amountProduct = {};
     }
     amountProduct[productName] = nb;
-    console.log(amountProduct);
-    console.log(JSON.stringify(amountProduct));
     sessionStorage.setItem("amountProduct", JSON.stringify(amountProduct));
 }

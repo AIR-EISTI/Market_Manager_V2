@@ -1,0 +1,184 @@
+{% extends 'layout_account.html' %}
+{% block stylesheet_bis %}
+    {% load static %}
+    <script src="{% static 'Snack/js/purchase.js'%}" type="text/javascript"></script>
+{% endblock%}
+
+{% block content_purchase %}
+    <div class="container">
+        <div class="columns">
+            <div class="column"></div>
+            <div class="column">
+                <div style="text-align: center">
+                        <a href="/purchase?version=touch" class="button button-big" style="margin:auto">Touch version</a>
+                </div>                   
+                <table class="table" id="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Number</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                            {% if product.quantity > 0 %}
+                                <tr data-id="{{product.id}}"
+                                    data-name="{{product.name}}"
+                                    data-quantity="{{product.quantity}}"
+                                    data-price="{{product.price}}"
+                                    class="product"
+                                    >
+                                    <!-- product name -->
+                                    <th 
+                                        style="cursor:pointer"
+                                        >
+                                        {{product.name}}
+                                    </th>
+                                    <!-- product price -->
+                                    <td 
+                                        style="cursor:pointer">
+                                        {{product.price}} €
+                                    </td>
+                                    <!-- product number -->
+                                    <td  
+                                        id="product_{{product.id}}_nb"
+                                        style="cursor:pointer"
+                                        class="nb">
+                                        0
+                                    </td>
+                                    <!-- button +/- -->
+                                    <td>
+                                        <div class="field is-grouped">
+                                            <p class="control">
+                                                <a class="button is-success is-small"
+                                                    name="{{product.name}}"
+                                                    >
+                                                    +
+                                                </a>
+                                            </p>
+                                            <p class="control remove">
+                                                <a class="button is-danger is-small"
+                                                    name="{{product.name}}"
+                                                    onclick="removeProduct(
+                                                        '{{product.id}}',
+                                                        '{{product.name}}',
+                                                        '{{product.price}}'
+                                                    )">
+                                                    -
+                                                </a>
+                                            </p>
+                                        </div>
+                                    <td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                </table>
+                {% if 'Snack.member_account' in request.user.get_all_permissions%}
+                    <div class="column">
+                        <label class="checkbox" title="If check the product will go in debt">
+                            <input type="checkbox" id="debt">
+                            In debt
+                        </label>
+                    </div>
+                {% endif %}
+                <div class="column is-offset-5">
+                    <a class="button is-success" onClick="buy()">Ok</a>
+                    <a class="button is-link" onClick="reset()">Cancel</a>
+                    <a class="button is-link logout" href="{% url 'logout' %}">Logout</a>
+                </div>
+            </div>
+            <div class="column"></div>
+        </div>
+    </div>
+    <div class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Validation</p>
+                <button class="delete" id="modal-delete"></button>
+            </header>
+            <section class="modal-card-body">
+            </section>
+            <footer class="modal-card-foot">
+                <a class="button is-success" id="valid">OK</a>
+                <a class="button" id="cancel">Cancel</a>
+            </footer>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript-purchase %}
+    function reset(){
+        {% for product in products %}
+            $("#product_{{product.id}}_nb").html('0');
+            $("#total").html('0,00 €');
+        {% endfor %}
+        sessionStorage.clear();
+    }
+
+    function buy(){
+        var products = {};
+        var nb = 0;
+        
+        //list of products
+
+        if(sessionStorage.amountProduct != null)
+        {
+            products = JSON.parse(sessionStorage.amountProduct);
+            console.log(amountProduct)
+        }
+
+
+        $(".modal").addClass("is-active");
+        $(".modal-card-body").html("The amount of your order is : "+$("#total").text());
+        if($("#debt").is(":checked")){
+            $(".modal-card-body").append("<br/>You put your order in debt");
+        }
+
+        //action on button
+
+        $('#modal-delete').click(function(){
+            $('.modal').attr('class', 'modal');
+        });
+
+        $('#cancel').click(function(){
+            $('.modal').attr('class', 'modal');
+        });
+
+        //ajax request
+
+        $('#valid').click(function(){
+            $.ajax({
+                type: "POST",
+                url: "/purchase/",
+                dataType: "json",
+                traditional: true,
+                data: {"products": JSON.stringify(products), "debt":$('#debt').is(":checked")},
+                success: function(data) {
+                    if(data.return){
+                        sessionStorage.clear();
+                        window.location.replace("/logout/");
+                    } else {
+                        location.reload();
+                    }
+                }
+            });
+        });
+    }
+
+    $( document ).ready(function() {
+        $(".product").click(addProduct);
+        var nb = $('.nb');
+        var session = 0;
+        for( var i=0;i<nb.length;i++){
+            session = sessionStorage.getItem(nb[i].id);
+            if(session != null){
+                $('#'+nb[i].id).html(session);
+            }
+        }
+    });
+
+{% endblock %}

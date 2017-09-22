@@ -17,7 +17,10 @@
                                                     )"
 
 !-->
-    <nav id="types_big">
+<div style="text-align: center">
+        <a href="/purchase?version=notouch" class="button button-big" style="margin:auto">No touch version</a>
+</div>
+<nav id="types_big">
         {% for type in types %}
         <a href="/purchase?type={{type.name}}">
         <div class="element"> 
@@ -39,6 +42,7 @@
     }
 
     $( document ).ready(function() {
+        $(".product").click(addProduct);
         var nb = $('.nb');
         var session = 0;
         for( var i=0;i<nb.length;i++){
