@@ -46,12 +46,13 @@
                         <h3  class="name">{{product.name}}</h3>
                         <img class="couverture" src="{% static 'Snack/images/product/'%}{{product.name}}.jpg"/>
                         <div class="number nb" id="product_{{product.id}}_nb">0</div>
-                        <div class="remove"
+                        <img class="remove"
                              onclick="removeProduct(
                                         '{{product.id}}',
                                         '{{product.name}}',
-                                        '{{product.price}}'
-                        )">x</div>
+                                        '{{product.price}}')" 
+                             src="{% static 'Snack/images/cross.svg'%}"
+                        />
                         
                     </div>
                 {% endif%}
