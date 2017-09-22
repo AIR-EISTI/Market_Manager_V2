@@ -2,6 +2,18 @@
     margin-top: 10%;
 }
 
+.button
+{
+    border:1px solid black !important;
+    min-width: 100px;
+    margin:5px;
+}
+
+.level-item
+{
+    flex:1;
+}
+
 .navbar-link{
     height: 1em;
     margin-top: 0.5em;
@@ -28,4 +40,140 @@
     margin-right: 8px;
     width: 24px;
     cursor: pointer;
+}
+
+/* menu type*/
+#types
+{
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#types .element
+{
+    display: inline-block;
+    max-width: 100px;
+    margin: 20px;
+    cursor: pointer;
+}
+
+#types .element img
+{
+    width: 60px;
+    height: auto;
+}
+
+
+#types_big
+{
+    text-align: center;
+    margin-bottom: 10px;
+   
+}
+
+#types_big .element
+{
+    position: relative;
+    display: inline-block;
+    width: 200px;
+    height: 250px;
+    margin: 50px;
+    padding: 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2); 
+    text-align: center;
+    vertical-align: middle;
+}
+
+#types_big .element img
+{
+    width: 150px;
+    height: auto;
+    max-height: calc(100% - 30px)
+}
+
+#types_big h3
+{
+    font-size: 1.3em;
+    position: absolute;
+    bottom: 5px;
+    left: 0px;
+    width: 100%;
+}
+
+/*button top*/
+
+#action 
+{
+    text-align: center;
+}
+
+
+#products .product img
+{
+    max-height: 80%;
+    width: auto;
+
+}
+
+#products .product
+{
+    display: inline-flex;
+    width: 300px;
+    height: 300px;
+    vertical-align: middle;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 5px;
+    margin-left: 30px;
+    margin-top: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2); 
+    cursor: pointer;
+}
+
+#products .price
+{
+    position: absolute;
+    right: 0px;
+    background-color: darkblue;
+    color:white;
+    top: 5px;
+    border-radius: 20px 0px 0px 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 5px 20px;
+}
+
+#products .number
+{
+    position: absolute;
+    left: 0px;
+    top: 5px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+#products .name
+{
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+#products .remove
+{
+    position: absolute;
+    left: -20px;
+    bottom: -20px;
+    font-size: 1.2em;
+    font-weight: bold;
+    background-color: red;
+    border-radius: 50px;
+    height: 40px;
+    width: 40px;
+    text-align: center;
 }

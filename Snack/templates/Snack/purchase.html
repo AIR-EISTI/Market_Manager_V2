@@ -5,101 +5,59 @@
 {% endblock%}
 
 {% block content_purchase %}
-    <div class="container">
-        <div class="columns">
-            <div class="column"></div>
-            <div class="column">
-                <table class="table" id="table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Number</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for product in products %}
-                            {% if product.quantity > 0 %}
-                                <tr>
-                                    <!-- product name -->
-                                    <th onclick="addProduct(
+<!--
+    onclick="addProduct(
                                             '{{product.id}}',
                                             '{{product.quantity}}',
                                             '{{product.price}}'
                                         )"
-                                        style="cursor:pointer"
-                                        >
-                                        {{product.name}}
-                                    </th>
-                                    <!-- product price -->
-                                    <td onclick="addProduct(
-                                            '{{product.id}}',
-                                            '{{product.quantity}}',
-                                            '{{product.price}}'
-                                        )"
-                                        style="cursor:pointer">
-                                        {{product.price}} €
-                                    </td>
-                                    <!-- product number -->
-                                    <td  onclick="addProduct(
-                                            '{{product.id}}',
-                                            '{{product.quantity}}',
-                                            '{{product.price}}'
-                                        )"
-                                        id="product_{{product.id}}_nb"
-                                        style="cursor:pointer"
-                                        class="nb">
-                                        0
-                                    </td>
-                                    <!-- button +/- -->
-                                    <td>
-                                        <div class="field is-grouped">
-                                            <p class="control">
-                                                <a class="button is-success is-small"
-                                                    name="{{product.name}}"
-                                                    onclick="addProduct(
-                                                        '{{product.id}}',
-                                                        '{{product.quantity}}',
-                                                        '{{product.price}}'
-                                                    )">
-                                                    +
-                                                </a>
-                                            </p>
-                                            <p class="control">
-                                                <a class="button is-danger is-small"
-                                                    name="{{product.name}}"
-                                                    onclick="removeProduct(
+    onclick="removeProduct(
                                                         '{{product.id}}',
                                                         '{{product.price}}'
-                                                    )">
-                                                    -
-                                                </a>
-                                            </p>
-                                        </div>
-                                    <td>
-                                </tr>
-                            {% endif %}
-                        {% endfor %}
-                </table>
-                {% if 'Snack.member_account' in request.user.get_all_permissions%}
-                    <div class="column">
-                        <label class="checkbox" title="If check the product will go in debt">
-                            <input type="checkbox" id="debt">
-                            In debt
-                        </label>
-                    </div>
-                {% endif %}
-                <div class="column is-offset-5">
-                    <a class="button is-success" onClick="buy()">Ok</a>
-                    <a class="button is-link" onClick="reset()">Cancel</a>
-                    <a class="button is-link logout" href="{% url 'logout' %}">Logout</a>
-                </div>
-            </div>
-            <div class="column"></div>
+                                                    )"
+
+!-->
+    <nav id="types">
+        {% for type in types %}
+        <a href="/purchase?type={{type.name}}">
+        <div class="element"> 
+            <img src="{% static 'Snack/images/type/'%}{{type.name}}.svg"/>
+            <h3>{{type.name}}</h3>
         </div>
+        </a>
+        {% endfor %}
+
+    </nav>
+    <div id="action">
+        <button class="button is-success" onclick="buy()">Buy</button>
+        <button class="button button is-light" onclick="reset()">Cancel</button>
+        <button class="button button is-light logout" href="{% url 'logout' %}"> Logout</button>
     </div>
+    <section id="products">
+            {% for product in products %}
+                {% if product.quantity > 0 %}
+                    <div    class="product" 
+                            data-id="{{product.id}}"
+                            data-name="{{product.name}}"
+                            data-quantity="{{product.quantity}}"
+                            data-price="{{product.price}}"
+                    >
+                        <div class="price">{{product.price}} €</div>
+                        <h3  class="name">{{product.name}}</h3>
+                        <img class="couverture" src="{% static 'Snack/images/product/'%}{{product.name}}.jpg"/>
+                        <div class="number nb" id="product_{{product.id}}_nb">0</div>
+                        <div class="remove"
+                             onclick="removeProduct(
+                                        '{{product.id}}',
+                                        '{{product.name}}',
+                                        '{{product.price}}'
+                        )">x</div>
+                        
+                    </div>
+                {% endif%}
+            {% endfor %}
+    </section>
+
     <div class="modal">
         <div class="modal-background"></div>
         <div class="modal-card">
@@ -118,11 +76,13 @@
 {% endblock %}
 
 {% block javascript-purchase %}
+
     function reset(){
         {% for product in products %}
             $("#product_{{product.id}}_nb").html('0');
             $("#total").html('0,00 €');
         {% endfor %}
+        sessionStorage.clear();
     }
 
     function buy(){
@@ -131,13 +91,16 @@
         
         //list of products
 
-        {% for product in products %}
-            nb = parseInt($('#product_{{product.id}}_nb').text());
-            if(nb != 0){
-                products["{{product.name}}"] = nb;
-            }
-        {% endfor %}
+        if(sessionStorage.amountProduct != null)
+        {
+            products = JSON.parse(sessionStorage.amountProduct);
+            console.log(amountProduct)
+        }
 
+        
+        
+        
+        
 
         $(".modal").addClass("is-active");
         $(".modal-card-body").html("The amount of your order is : "+$("#total").text());
@@ -158,6 +121,7 @@
         //ajax request
 
         $('#valid').click(function(){
+            console.log("yo");
             $.ajax({
                 type: "POST",
                 url: "/purchase/",
@@ -177,8 +141,13 @@
     }
 
     $( document ).ready(function() {
+
+        //set click events
+        $(".product").click(addProduct);
+        //load values
         var nb = $('.nb');
         var session = 0;
+        console.log(sessionStorage);
         for( var i=0;i<nb.length;i++){
             session = sessionStorage.getItem(nb[i].id);
             if(session != null){

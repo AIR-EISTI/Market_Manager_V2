@@ -101,8 +101,16 @@ def purchase(request):
             json_data = json.dumps({'return': True})
         return HttpResponse(json_data)
     else:
-        products = Product.objects.all()
-        return render(request, 'Snack/purchase.html', {'products': products})
+        if "type" in request.GET:
+            typeSelect = Type.objects.get(name=request.GET["type"])
+            products = Product.objects.filter(type=typeSelect.id)
+            types = Type.objects.all()
+            return render(request, 'Snack/purchase.html', {'products': products,'types':types,'typeSelect':typeSelect})
+        else:
+            types = Type.objects.all()
+            return render(request, 'Snack/purchaseType.html', {'types':types})
+        
+        
 
 
 @login_required

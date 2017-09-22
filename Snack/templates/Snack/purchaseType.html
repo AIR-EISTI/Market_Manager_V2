@@ -1,0 +1,52 @@
+{% extends 'layout_account.html' %}
+{% block stylesheet_bis %}
+    {% load static %}
+    <script src="{% static 'Snack/js/purchase.js'%}" type="text/javascript"></script>
+{% endblock%}
+
+{% block content_purchase %}
+<!--
+    onclick="addProduct(
+                                            '{{product.id}}',
+                                            '{{product.quantity}}',
+                                            '{{product.price}}'
+                                        )"
+    onclick="removeProduct(
+                                                        '{{product.id}}',
+                                                        '{{product.price}}'
+                                                    )"
+
+!-->
+    <nav id="types_big">
+        {% for type in types %}
+        <a href="/purchase?type={{type.name}}">
+        <div class="element"> 
+            <img src="{% static 'Snack/images/type/'%}{{type.name}}.svg"/>
+            <h3>{{type.name}}</h3>
+        </div>
+        </a>
+        {% endfor %}
+
+    </nav>
+{% endblock %}
+
+{% block javascript-purchase %}
+    function reset(){
+        {% for product in products %}
+            $("#product_{{product.id}}_nb").html('0');
+            $("#total").html('0,00 €');
+        {% endfor %}
+    }
+
+    $( document ).ready(function() {
+        var nb = $('.nb');
+        var session = 0;
+        for( var i=0;i<nb.length;i++){
+            session = sessionStorage.getItem(nb[i].id);
+            if(session != null){
+                $('#'+nb[i].id).html(session);
+            }
+        }
+    });
+
+{% endblock %}
