@@ -22,6 +22,8 @@ p.navbar-link:hover, .button.is-link, .table th, .table tr th{
     border-color: #ffffff;
 }
 
+
+
 .navbar-divider{
     background-color: #ffffff;
 }
@@ -29,4 +31,14 @@ p.navbar-link:hover, .button.is-link, .table th, .table tr th{
 .checkbox:hover{
     color: #ffffff;
     font-weight:bold;
+}
+
+.button-big
+{
+    border-color: #ffffff !important;
+}
+
+#products .product,#types_big .element
+{
+    box-shadow: 0 2px 8px rgba(255,255,255,0.2);
 }

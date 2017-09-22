@@ -34,8 +34,8 @@
     </nav>
     <div id="action">
         <button class="button is-success button-big" onclick="buy()">Buy</button>
-        <button class="button button is-light button-big" onclick="reset()">Cancel</button>
-        <button class="button button is-light logout button-big" href="{% url 'logout' %}"> Logout</button>
+        <button class="button button button-big" onclick="reset()">Cancel</button>
+        <a class="button button logout button-big" href="{% url 'logout' %}"> Logout</a>
     </div>
     <section id="products">
             {% for product in products %}
