@@ -42,63 +42,73 @@
     cursor: pointer;
 }
 
-/* menu type*/
-#types
+/* ------ menu type ------- */
+
+/* -- general -- */
+
+#types,#types_big
 {
     text-align: center;
     margin-bottom: 10px;
 }
 
-#types .element
-{
-    display: inline-block;
-    max-width: 100px;
-    margin: 20px;
-    cursor: pointer;
-}
-
-#types .element img
-{
-    width: 60px;
-    height: auto;
-}
-
-
-#types_big
-{
-    text-align: center;
-    margin-bottom: 10px;
-   
-}
-
-#types_big .element
-{
+.type_product
+{   
     position: relative;
-    display: inline-block;
-    width: 200px;
-    height: 250px;
-    margin: 50px;
-    padding: 20px;
+    display: inline-flex;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(0,0,0,0.2); 
     text-align: center;
     vertical-align: middle;
+    justify-content: center;
+    align-items: center;
+    background-image:linear-gradient(60deg, white, rgb(245,245,245));
+    border:1px solid lightgray;
 }
 
-#types_big .element img
+.type_product img
 {
-    width: 150px;
+    max-width: 100%;
     height: auto;
-    max-height: calc(100% - 30px)
+    max-height: calc(100% - 30px);
+    background-color: transparent;
+}
+
+.type_product h3
+{
+    background-color: transparent;
+    position: absolute;
+    bottom: 5px;
+    left: 0px;
+    width: 100%;
+}
+
+/* -- little menu --*/
+
+#types .type_product
+{
+    width: 120px;
+    height: 120px;
+    border-radius: 5px;
+    margin: 20px;
+    padding: 8px;
+}
+
+/* -- big menu --*/
+
+#types_big .type_product
+{
+    width: 250px;
+    height: 250px;
+    border-radius: 10px;
+    margin: 50px;
+    padding: 20px;
 }
 
 #types_big h3
 {
     font-size: 1.3em;
-    position: absolute;
-    bottom: 5px;
-    left: 0px;
-    width: 100%;
+    
 }
 
 /*button top*/
