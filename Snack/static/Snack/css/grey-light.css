@@ -40,3 +40,9 @@ p.navbar-link:hover, .button.is-link, .table th, .table tr th{
 {
     background-image:none;
 }
+
+.type_product.selection
+{
+    background-image:none;
+    border:5px solid #b540e9;
+}

@@ -52,6 +52,12 @@
     margin-bottom: 10px;
 }
 
+.type_product.selection
+{
+    background-image:linear-gradient(60deg, white, #95e1e1);
+    color:black;
+}
+
 .type_product
 {   
     position: relative;
@@ -118,6 +124,7 @@
     text-align: center;
 }
 
+/* products */
 
 #products .product img
 {

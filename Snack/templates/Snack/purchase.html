@@ -24,7 +24,11 @@
     <nav id="types">
         {% for type in types %}
         <a href="/purchase?type={{type.name}}">
-        <div class="type_product"> 
+            <div class="type_product
+            {% if type == typeSelect%}
+                selection
+            {% endif %}
+            "> 
             <img src="{% static 'Snack/images/type/'%}{{type.name}}.svg"/>
             <h3>{{type.name}}</h3>
         </div>
