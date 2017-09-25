@@ -93,8 +93,8 @@
 
 #types .type_product
 {
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     border-radius: 5px;
     margin: 20px;
     padding: 8px;
@@ -104,10 +104,10 @@
 
 #types_big .type_product
 {
-    width: 250px;
-    height: 250px;
+    width: 200px;
+    height: 200px;
     border-radius: 10px;
-    margin: 50px;
+    margin: 30px;
     padding: 20px;
 }
 
@@ -136,8 +136,8 @@
 #products .product
 {
     display: inline-flex;
-    width: 300px;
-    height: 300px;
+    width: 200px;
+    height: 200px;
     vertical-align: middle;
     justify-content: center;
     align-items: center;
