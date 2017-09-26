@@ -40,6 +40,23 @@
         <button class="button is-success button-big" onclick="buy()">Buy</button>
         <button class="button button button-big" onclick="reset()">Cancel</button>
         <a class="button button logout button-big" href="{% url 'logout' %}"> Logout</a>
+        
+        <input type="checkbox" id="debt">
+        <label title="If check the product will go in debt" for="debt">    
+        
+        <div class="slider button-big">
+            <div class="puce">
+                
+            </div>    
+        </div>
+        <span class="textActiv text">
+            In dept
+        </span>
+        <span class="textUnactiv text">
+            Not in dept
+        </span>
+        
+        </label>
     </div>
     <section id="products">
             {% for product in products %}

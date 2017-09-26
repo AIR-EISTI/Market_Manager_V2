@@ -124,6 +124,113 @@
     text-align: center;
 }
 
+#action .button-big
+{
+    vertical-align: middle;
+}
+
+/* checkbox */
+
+#debt
+{
+    display: none;
+}
+
+
+[type="checkbox"]:not(:checked) + label, [type="checkbox"]:checked + label 
+{
+    position: relative;
+    cursor: pointer;
+    vertical-align: middle;
+    height: 36px;
+    width: 130px;
+    display: inline-block;
+}
+
+
+[type="checkbox"]:not(:checked) + label .textUnactiv
+{
+    position: absolute;
+    left: 40px;
+    vertical-align: middle;
+    display: inline-block;
+    width: 80px;
+    text-align: left;
+    top:5px;
+}
+
+
+[type="checkbox"]:checked + label .textActiv
+{
+    position: absolute;
+    left: 10px;
+    color:white;
+    vertical-align: middle;
+    display: inline-block;
+    width: 80px;
+    text-align: left;
+    top:5px;
+    background-color: grey;
+}
+
+
+[type="checkbox"]:checked + label .textUnactiv
+{
+    display: none;
+}
+
+[type="checkbox"]:not(:checked) + label .textActiv
+{
+    display: none;
+
+}
+
+[type="checkbox"]:checked + label .slider
+{
+    background-color: grey;
+}
+
+[type="checkbox"]:not(:checked) + label .slider, [type="checkbox"]:checked + label .slider
+{
+    position: absolute;
+    left: 0px;
+    top:0px;
+    width: 130px;
+    height: 36px;
+    margin: 0 !important;
+    
+    
+    border:1px solid grey;
+    border-radius: 18px;
+    vertical-align: middle;
+}
+
+[type="checkbox"]:not(:checked) + label .puce 
+{
+    position: absolute;
+    left: 3px;
+    top:3px;
+    height: 30px;
+    width: 30px;
+    border-radius: 18px;
+    background-color: grey;
+    border: 2px solid black; 
+}
+
+[type="checkbox"]:checked + label .puce 
+{
+    position: absolute;
+    right: 3px;
+    top:3px;
+    height: 30px;
+    width: 30px;
+    border-radius: 18px;
+    background-color: white;
+    background-color: #00d1b2;
+    border: 2px solid black;
+}
+
+
 /* products */
 
 #products .product img
