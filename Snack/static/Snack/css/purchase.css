@@ -137,7 +137,7 @@
 }
 
 
-[type="checkbox"]:not(:checked) + label, [type="checkbox"]:checked + label 
+#debt[type="checkbox"]:not(:checked) + label, #debt[type="checkbox"]:checked + label 
 {
     position: relative;
     cursor: pointer;
@@ -148,7 +148,7 @@
 }
 
 
-[type="checkbox"]:not(:checked) + label .textUnactiv
+#debt[type="checkbox"]:not(:checked) + label .textUnactiv
 {
     position: absolute;
     left: 40px;
@@ -160,7 +160,7 @@
 }
 
 
-[type="checkbox"]:checked + label .textActiv
+#debt[type="checkbox"]:checked + label .textActiv
 {
     position: absolute;
     left: 10px;
@@ -174,23 +174,23 @@
 }
 
 
-[type="checkbox"]:checked + label .textUnactiv
+#debt[type="checkbox"]:checked + label .textUnactiv
 {
     display: none;
 }
 
-[type="checkbox"]:not(:checked) + label .textActiv
+#debt[type="checkbox"]:not(:checked) + label .textActiv
 {
     display: none;
 
 }
 
-[type="checkbox"]:checked + label .slider
+#debt[type="checkbox"]:checked + label .slider
 {
     background-color: grey;
 }
 
-[type="checkbox"]:not(:checked) + label .slider, [type="checkbox"]:checked + label .slider
+#debt[type="checkbox"]:not(:checked) + label .slider, #debt[type="checkbox"]:checked + label .slider
 {
     position: absolute;
     left: 0px;
@@ -205,7 +205,7 @@
     vertical-align: middle;
 }
 
-[type="checkbox"]:not(:checked) + label .puce 
+#debt[type="checkbox"]:not(:checked) + label .puce 
 {
     position: absolute;
     left: 3px;
@@ -217,7 +217,7 @@
     border: 2px solid black; 
 }
 
-[type="checkbox"]:checked + label .puce 
+#debt[type="checkbox"]:checked + label .puce 
 {
     position: absolute;
     right: 3px;
