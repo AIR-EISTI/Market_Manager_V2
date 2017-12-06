@@ -150,7 +150,8 @@
             console.log("yo");
             $.ajax({
                 type: "POST",
-                url: "/purchase/",
+                async: false,
+		url: "/purchase/",
                 dataType: "json",
                 traditional: true,
                 data: {"products": JSON.stringify(products), "debt":$('#debt').is(":checked")},

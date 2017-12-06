@@ -81,7 +81,12 @@
         var clock = document.getElementById("hours");
         var timeinterval = setInterval(function(){
             var t = new Date()
-            clock.innerHTML =t.getHours() + 'h' +t.getMinutes();
+	    var m = t.getMinutes()
+	    if (m < 10)
+	    {
+	 	m = '0'+m
+	    }
+	    clock.innerHTML =t.getHours() + 'h' + m;
         },1000);
     });
 {% endblock %}
