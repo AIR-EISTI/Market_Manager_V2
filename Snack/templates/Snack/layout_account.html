@@ -23,6 +23,28 @@
 {% block title %} Purchase {% endblock %}
 
 {% block content %}
+    <!-- modal if session will expire -->
+
+    <div class="modal" id="session-modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Déconnection dans 20s</p>
+            <button class="delete" aria-label="close"></button>
+          </header>
+          <section class="modal-card-body">
+            Votre session va expirer dans 20s...
+          </section>
+          <footer class="modal-card-foot">
+            <button class="button is-success" id="session-modal-renew">Renouveler la session</button>
+            <button class="button" id="session-modal-logout">Se déconnecter</button>
+          </footer>
+        </div>
+    </div>
+
+
+
+
     <div class="columns is-mobile">
         <div class="column is-half is-offset-one-quarter" id="notif">
         </div>
@@ -180,6 +202,30 @@
 {% block javascript %}
     {% block javascript-purchase %}
     {% endblock %}
+    
+    function session_expire()
+    {
+        $("#session-modal").addClass("is-active");
+        $("#session-modal-renew").click(function(){
+            console.log("toto")
+            ping();
+            $("#session-modal").removeClass("is-active");
+        })
+
+        $("#session-modal-logout").click(function(){
+            logout()
+        })
+    }
+
+    function logout()
+    {
+        sessionStorage.clear();
+        window.location.replace("/logout/");
+    }
+    var timeoutSession = setTimeout(session_expire,100000);
+    var timeoutLogout = setTimeout(logout,120000);
+
+
     function disable_css(){
         $("#default-style").prop('disabled', true);
         $("#black-ter-style").prop('disabled', true);
