@@ -24,3 +24,8 @@ html, body{
     right: 1.125em;
     top: 50%;
 }
+
+.button.is-success
+{
+    background-color: #090909;
+}
