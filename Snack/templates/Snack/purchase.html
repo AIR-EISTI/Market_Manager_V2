@@ -84,7 +84,7 @@
             {% endfor %}
     </section>
 
-    <div class="modal">
+    <div class="modal" id="modal-buy">
         <div class="modal-background"></div>
         <div class="modal-card">
             <header class="modal-card-head">
@@ -128,8 +128,8 @@
         
         
 
-        $(".modal").addClass("is-active");
-        $(".modal-card-body").html("The amount of your order is : "+$("#total").text());
+        $("#modal-buy").addClass("is-active");
+        $("#modal-buy .modal-card-body").html("The amount of your order is : "+$("#total").text());
         if($("#debt").is(":checked")){
             $(".modal-card-body").append("<br/>You put your order in debt");
         }
@@ -137,11 +137,11 @@
         //action on button
 
         $('#modal-delete').click(function(){
-            $('.modal').attr('class', 'modal');
+            $('#modal-buy').attr('class', 'modal');
         });
 
         $('#cancel').click(function(){
-            $('.modal').attr('class', 'modal');
+            $('#modal-buy').attr('class', 'modal');
         });
 
         //ajax request

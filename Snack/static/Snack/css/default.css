@@ -2,3 +2,17 @@ html, body{
     margin: 0;
     height: 100%;
 }
+.modal
+{
+    background-color: transparent !important;
+}
+.modal-background
+{
+    background-color: rgba(80,80,80,.86) !important;
+}
+
+.modal-card
+{
+    border: 1px solid white;
+    border-radius: 5px;
+}
