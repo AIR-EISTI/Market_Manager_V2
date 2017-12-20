@@ -131,7 +131,11 @@
         $("#modal-buy").addClass("is-active");
         $("#modal-buy .modal-card-body").html("The amount of your order is : "+$("#total").text());
         if($("#debt").is(":checked")){
-            $(".modal-card-body").append("<br/>You put your order in debt");
+            $(".modal-card-body").append("<div class='debt-msg'>You put your order in debt</div>");
+        }
+        else
+        {
+            $(".modal-card-body").append("<br/><div class='debt-msg'>Not in debt</div>");
         }
 
         //action on button

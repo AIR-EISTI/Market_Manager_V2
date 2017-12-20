@@ -9,6 +9,14 @@
     margin:5px;
 }
 
+.debt-msg
+{
+    font-size: 1.3em;
+    font-weight: 800;
+    text-align: center;
+    
+}
+
 .level-item
 {
     flex:1;
