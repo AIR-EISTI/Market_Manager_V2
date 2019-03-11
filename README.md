@@ -23,6 +23,11 @@ $ cd Market_Manager_V2
 
 ### 3. Requirements
 
+Before installing python dependancies you need to install some packages
+ * libpng-dev
+ * python3-dev
+ * numpy
+
 The requirements.txt file contains all the libraries needed, to install them,
 simply launch :
 
